@@ -20,6 +20,8 @@ import defaultAvatars from "../../constants/defaultAvatars";
 import { useLocation, useNavigate } from "react-router-dom";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import CallIcon from "@mui/icons-material/Call";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -41,7 +43,7 @@ const ProfileSetup = () => {
   };
   let randomAvatar = getRandomAvatar();
 
-  const getPhotoUrl =  () => {
+  const getPhotoUrl = () => {
     if (firstTime) {
       return randomAvatar;
     }
@@ -49,13 +51,14 @@ const ProfileSetup = () => {
       return randomAvatar;
     }
     return currentUser?.photoUrl;
-  }
+  };
 
   const navigate = useNavigate();
   const { state } = useLocation();
   const { firstTime } = state || {};
-  const { currentUser, uploadFile, updateUserProfile } = useContext(ChatifyContext);
-  console.log(currentUser);
+  const { currentUser, uploadFile, updateUserProfile } =
+    useContext(ChatifyContext);
+  // console.log(currentUser);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState("");
@@ -95,7 +98,7 @@ const ProfileSetup = () => {
   const handleImageChange = (e) => {
     if (!e.target.files.length) return;
     let selectedImage = e.target.files[0];
-    console.log(selectedImage);
+    // console.log(selectedImage);
     let url = URL.createObjectURL(selectedImage);
     setLocalImage(selectedImage);
     setLocalUrl(url);
@@ -105,33 +108,40 @@ const ProfileSetup = () => {
   const handleAvatarSelect = (url) => {
     setDisplayUrl(url);
     setOnlineUrl(url);
-  }
+  };
 
   const onEndUpload = (url) => {
-    console.log(url);
+    // console.log(url);
     setOnlineUrl(url);
     setUploadLoading(false);
     setUploadProgress(0);
-  }
+  };
 
   const handleUploadImage = async () => {
     if (uploadLoading || submitLoading) return;
     if (!displayUrl.includes("https")) {
-        setUploadLoading(true);
-        await uploadFile(localImage, onEndUpload, "avatars", setUploadProgress);
+      setUploadLoading(true);
+      await uploadFile(localImage, onEndUpload, "avatars", setUploadProgress);
     }
   };
 
   const handleSubmit = async () => {
     handleNameBlur();
     handleBioBlur();
-    if (!name.length || !bio.length || nameError.length || bioError.length || submitLoading || uploadLoading)
+    if (
+      !name.length ||
+      !bio.length ||
+      nameError.length ||
+      bioError.length ||
+      submitLoading ||
+      uploadLoading
+    )
       return;
     setSubmitLoading(true);
     await updateUserProfile({
-        bio,
-        userName: name,
-        photoUrl: onlineUrl
+      bio,
+      userName: name,
+      photoUrl: onlineUrl,
     });
     navigate("/chat");
   };
@@ -139,8 +149,8 @@ const ProfileSetup = () => {
   useEffect(() => {
     let defaultBio = "Hey there, I am using Chatify.";
     // if (currentUser) {
-      setBio(currentUser?.bio || defaultBio);
-      setName(currentUser?.userName || "");
+    setBio(currentUser?.bio || defaultBio);
+    setName(currentUser?.userName || "");
     // } else {
     //   setBio(defaultBio);
     //   setName("");
@@ -148,7 +158,7 @@ const ProfileSetup = () => {
     let photoUrl = getPhotoUrl();
     setDisplayUrl(photoUrl);
     setOnlineUrl(photoUrl);
-  }, [currentUser])
+  }, [currentUser]);
 
   return (
     <div className="profilesetup_container">
@@ -156,6 +166,11 @@ const ProfileSetup = () => {
         <Logo style={{ fontSize: "1.5rem", marginLeft: "20px" }} />
         <h2 className="profile_title">Setup your profile</h2>
         <div style={{ width: "10%" }} className="dummy"></div>
+      </div>
+      <div className="profile_header_mobile">
+        <Logo style={{ fontSize: "1.5rem", marginLeft: "20px" }} />
+        <hr style={{ border: `1px solid ${CustomColors.lightBlue}` }} />
+        <h2 className="profile_title">Setup your profile</h2>
       </div>
 
       <div className="profile_wrapper">
@@ -187,53 +202,62 @@ const ProfileSetup = () => {
             </IconButton>
           </div>
 
-          {defaultAvatars.includes(displayUrl) ? <></> : <div className="upload_container">
-            {uploadLoading ? (
-              <div className="upload_progress_shadow">
-                <CircularProgressWithLabel value={uploadProgress} />
-              </div>
-            ) : (
-              <></>
-            )}
+          {defaultAvatars.includes(displayUrl) ||
+          displayUrl === currentUser?.photoUrl ? (
+            <></>
+          ) : (
+            <div className="upload_container">
+              {uploadLoading ? (
+                <div className="upload_progress_shadow">
+                  <CircularProgressWithLabel value={uploadProgress} />
+                </div>
+              ) : (
+                <></>
+              )}
 
-            <Button
-              variant="contained"
-              onClick={handleUploadImage}
-              startIcon={<FileUploadOutlinedIcon />}
-              style={{
-                backgroundColor: CustomColors.blue,
-                borderRadius: "30px",
-                margin: "20px 5px",
-                textTransform: "none",
-                fontFamily: "Mooli",
-                fontSize: "15px",
-                height: "40px",
-              }}
-            >
-              {uploadLoading ? "Uploading..." : "Upload"}
-            </Button>
-          </div>}
-          <div className="all_avatars">
-            {defaultAvatars.map((url, i) => (
-              <div
-                key={i}
-                onClick={() => {handleAvatarSelect(url)}}
-                className="avatar_choice"
+              <Button
+                variant="contained"
+                onClick={handleUploadImage}
+                startIcon={<FileUploadOutlinedIcon />}
                 style={{
-                  border:
-                    url === displayUrl
-                      ? `4px solid ${CustomColors.blue}`
-                      : `4px solid ${CustomColors.pureWhite}`,
+                  backgroundColor: CustomColors.blue,
+                  borderRadius: "30px",
+                  margin: "20px 5px",
+                  textTransform: "none",
+                  fontFamily: "Mooli",
+                  fontSize: "15px",
+                  height: "40px",
                 }}
               >
-                <img
-                  src={url}
-                  width="100%"
-                  style={{ borderRadius: "50%" }}
-                  alt={`avatar${i + 1}`}
-                />
-              </div>
-            ))}
+                {uploadLoading ? "Uploading..." : "Upload"}
+              </Button>
+            </div>
+          )}
+          <div className="all_avatars">
+            <div className="all_avatars_wrapper">
+              {defaultAvatars.map((url, i) => (
+                <div
+                  key={i}
+                  onClick={() => {
+                    handleAvatarSelect(url);
+                  }}
+                  className="avatar_choice"
+                  style={{
+                    border:
+                      url === displayUrl
+                        ? `4px solid ${CustomColors.blue}`
+                        : `4px solid ${CustomColors.pureWhite}`,
+                  }}
+                >
+                  <img
+                    src={url}
+                    width="100%"
+                    style={{ borderRadius: "50%" }}
+                    alt={`avatar${i + 1}`}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         <div className="profile_right">
@@ -296,6 +320,27 @@ const ProfileSetup = () => {
           >
             Save
           </LoadingButton>
+          <div className="horizontal_rule"></div>
+          <div className="profile_detail_container">
+            <div className="profile_detail_left">
+              <EmailOutlinedIcon sx={{ color: CustomColors.grey }} />
+            </div>
+            <div className="profile_detail_right">
+              <p className="profile_detail_title">Email</p>
+              <p className="profile_detail_content">{currentUser?.email}</p>
+            </div>
+          </div>
+          <div className="profile_detail_container">
+            <div className="profile_detail_left">
+              <CallIcon sx={{ color: CustomColors.grey }} />
+            </div>
+            <div className="profile_detail_right">
+              <p className="profile_detail_title">Phone</p>
+              <p className="profile_detail_content">
+                {currentUser?.phoneNumber}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

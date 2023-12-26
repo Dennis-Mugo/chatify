@@ -1,0 +1,19 @@
+.chat_container {
+  display: flex;
+  height: 100vh;
+  background-color: var(--lightBlue);
+}
+
+.chat_left_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat_left_shadow {
+  width: 95%;
+  display: flex;
+  border-radius: 20px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}

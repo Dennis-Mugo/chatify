@@ -25,7 +25,6 @@ const Home = () => {
           </p>
           <Button
             variant="contained"
-            cap
             onClick={handleGetStarted}
             style={{
               backgroundColor: CustomColors.pink,
@@ -49,7 +48,9 @@ const Home = () => {
 
 const HomeNav = () => {
   const navigate = useNavigate();
-  const navigateSignin = () => {};
+  const navigateSignin = () => {
+    navigate("/signin");
+  };
   return (
     <div className="home_nav_container">
       <Logo />

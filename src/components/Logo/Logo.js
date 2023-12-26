@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Logo.css";
 import { useNavigate } from "react-router-dom";
+import { ChatifyContext } from "../../context/context";
 
 const Logo = ({ style }) => {
   const navigate = useNavigate();
+  const { currentUser } = useContext(ChatifyContext);
   const handleLogoClick = () => {
-    navigate("/");
+    if (currentUser) {
+      navigate("/chat");
+    } else {
+      navigate("/");
+    }
   };
   return (
     <div>

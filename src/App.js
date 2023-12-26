@@ -14,8 +14,6 @@ import Starter from "./components/Starter/Starter";
 import SigninVerify from "./pages/SigninVerify/SigninVerify";
 
 function App() {
-  const { hello } = useContext(ChatifyContext);
-
   return (
     <Router>
       <Routes>
