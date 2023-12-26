@@ -60,7 +60,7 @@ const Signin = () => {
     setSubmitLoading(true);
     try {
       let userCredential = await signInWithEmailAndPassword(auth, email, pass);
-      console.log(userCredential.user);
+      // console.log(userCredential.user);
       await fetchTempUser(userCredential.user.uid);
       navigate("/signin-verify-phone");
     } catch (error) {
