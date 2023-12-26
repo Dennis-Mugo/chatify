@@ -1,0 +1,7 @@
+.logo_text {
+  font-family: "Mooli", sans-serif;
+  font-size: 2.5rem;
+  color: var(--blue);
+  /* margin: 0 15px; */
+  cursor: pointer;
+}

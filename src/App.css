@@ -1,0 +1,14 @@
+:root {
+  --dark: #0d1c2e;
+  --blue: #2a8bf2;
+  --pink: #ff3366;
+  --grey: #707c97;
+  --lightBlue: #e6ecfe;
+  --white: #fafbff;
+  --pureWhite: #ffffff;
+  --lightGrey: rgba(0, 0, 0, 0.24);
+}
+
+body {
+  background-color: var(--white);
+}

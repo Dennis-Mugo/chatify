@@ -1,0 +1,84 @@
+.profilesetup_container {
+  min-height: 90vh;
+  border: 1px solid var(--pureWhite);
+  margin: auto;
+  margin-top: 20px;
+  width: 90%;
+  background-color: var(--pureWhite);
+  border-radius: 15px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.profile_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--lightBlue);
+}
+.profile_title {
+  text-align: center;
+  font-family: "Nunito Sans", sans-serif;
+  /* margin: 20px; */
+  color: var(--dark);
+}
+
+.profile_wrapper {
+  display: flex;
+}
+
+.profile_left {
+  flex: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile_right {
+  flex: 50;
+}
+
+.image_display {
+  width: 200px;
+  height: 200px;
+  border-radius: 100px;
+  margin: 20px 0 0;
+  background-color: var(--lightGrey);
+  background-size: 100%;
+  background-position: center;
+}
+
+.upload_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.upload_progress_shadow {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  border-radius: 20px;
+  width: 40px;
+  height: 40px;
+}
+
+.all_avatars {
+  display: flex;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--lightBlue);
+  margin-top: 10px;
+
+  width: 90%;
+  /* justify-content: space-evenly; */
+}
+
+.avatar_choice {
+  background-color: var(--lightGrey);
+  width: 80px;
+  height: 80px;
+  border-radius: 50px;
+  margin: 10px 10px;
+  cursor: pointer;
+  transition: all 100ms ease;
+}

@@ -1,0 +1,15 @@
+.auth_toggle_text {
+  font-family: "Mooli", sans-serif;
+  font-size: 14px;
+  color: var(--dark);
+}
+
+.auth_toggle_link {
+  color: var(--pink);
+  cursor: pointer;
+  transition: all 300ms ease;
+}
+
+.auth_toggle_link:hover {
+  color: var(--blue);
+}

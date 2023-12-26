@@ -1,0 +1,60 @@
+.signup_container {
+  display: flex;
+}
+
+.signup_left {
+  /* border: 1px solid black; */
+  flex: 50;
+  height: 100vh;
+}
+
+.signup_right {
+  /* border: 1px solid black; */
+  flex: 50;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* padding-right: 25px; */
+}
+
+.signup_float {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--pureWhite);
+  border-radius: 15px;
+  padding: 20px;
+  width: 60%;
+  min-height: 80vh;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+@media screen and (max-width: 1100px) {
+  .signup_float {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .signup_left {
+    display: none;
+  }
+  .signup_float {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .signup_left {
+    display: none;
+  }
+  .signup_float {
+    width: 100%;
+  }
+}
+
+.auth_title {
+  font-family: "Nunito Sans", sans-serif;
+  color: var(--dark);
+}

@@ -1,0 +1,16 @@
+.encourage_message {
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  color: var(--dark);
+  margin: 0;
+  padding: 0;
+}
+
+.otp_text {
+  font-family: "Nunito Sans", sans-serif;
+  margin: 20px 0;
+  font-size: 14px;
+  padding: 0;
+  text-align: center;
+  color: var(--grey);
+}
