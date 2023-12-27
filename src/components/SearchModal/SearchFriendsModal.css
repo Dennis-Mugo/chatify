@@ -9,3 +9,96 @@
   height: 70vh;
   border-radius: 20px;
 }
+
+.search_friends_header {
+  display: flex;
+  height: 80px;
+}
+
+.search_friends_left {
+  flex: 90;
+  /* border: 1px solid black; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search_friends_right {
+  flex: 10;
+  /* border: 1px solid black; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search_input_shadow {
+  width: 90%;
+  height: 50px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.search_input {
+  flex: 1;
+  height: 40px;
+  font-family: "Mooli", sans-serif;
+  border: none;
+  outline: none;
+}
+
+.friend_result_container {
+  height: calc(70vh - 110px);
+  /* border: 1px solid black; */
+  overflow-y: scroll;
+}
+
+.friend_result p {
+  margin: 0;
+  padding: 0;
+  font-family: "Nunito", sans-serif;
+}
+
+.friend_result {
+  display: flex;
+  margin: 5px 0;
+}
+
+.friend_result_left {
+  /* border: 1px solid black; */
+  flex: 90;
+  display: flex;
+  padding: 5px 15px;
+}
+
+.friend_result_right {
+  /* border: 1px solid black; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 10;
+}
+
+.friend_result_avatar {
+  display: flex;
+  /* justify-content: center;
+  align-items: center;
+  border: 1px solid black; */
+}
+
+.friend_username {
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 600;
+}
+
+.friend_phone {
+  font-size: 12px;
+}
+
+.no_friend {
+  font-family: "Nunito", sans-serif;
+  text-align: center;
+}

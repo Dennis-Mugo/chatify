@@ -43,7 +43,7 @@ function ChatLeft(props) {
       <SearchFriendsModal />
       <div
         style={{
-          margin: "10px auto",
+          margin: "5px auto",
           width: "95%",
           borderBottom: `1px solid ${CustomColors.lightBlue}`,
         }}

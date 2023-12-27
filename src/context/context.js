@@ -1,14 +1,30 @@
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { db, storage } from "../firebase.config";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { uuid4 as v4 } from "uuid4";
+import { baseUrl } from "../constants/constants";
 
 export const ChatifyContext = createContext();
 
 export const ChatifyProvider = ({ children }) => {
   const [tempUser, setTempUser] = useState(false);
   const [currentUser, setCurrentUser] = useState(false);
+
+  useEffect(() => {
+    // (async () => {
+    //   let res = await fetch(`${baseUrl}/search_friends`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({ userId: "l", query: "nd" }),
+    //   });
+    //   res = await res.json();
+    //   console.log(res);
+    // })();
+  }, []);
+
   const storeTempUser = async (user) => {
     localStorage.setItem("tempUser", JSON.stringify(user));
   };
