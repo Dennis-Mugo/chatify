@@ -1,0 +1,6 @@
+.modal_container {
+  width: 50%;
+  background-color: var(--pureWhite);
+  height: 70vh;
+  border-radius: 20px;
+}

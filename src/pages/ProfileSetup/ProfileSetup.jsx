@@ -36,6 +36,12 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 const ProfileSetup = () => {
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  const { firstTime } = state || {};
+  const { currentUser, uploadFile, updateUserProfile } =
+    useContext(ChatifyContext);
+
   const getRandomAvatar = () => {
     let max = defaultAvatars.length;
     let index = Math.floor(Math.random() * max);
@@ -53,11 +59,7 @@ const ProfileSetup = () => {
     return currentUser?.photoUrl;
   };
 
-  const navigate = useNavigate();
-  const { state } = useLocation();
-  const { firstTime } = state || {};
-  const { currentUser, uploadFile, updateUserProfile } =
-    useContext(ChatifyContext);
+  
   // console.log(currentUser);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [name, setName] = useState("");
@@ -164,13 +166,13 @@ const ProfileSetup = () => {
     <div className="profilesetup_container">
       <div className="profile_header">
         <Logo style={{ fontSize: "1.5rem", marginLeft: "20px" }} />
-        <h2 className="profile_title">Setup your profile</h2>
+        <h2 className="profile_title">{firstTime ? "Setup your profile" : "My profile"}</h2>
         <div style={{ width: "10%" }} className="dummy"></div>
       </div>
       <div className="profile_header_mobile">
         <Logo style={{ fontSize: "1.5rem", marginLeft: "20px" }} />
         <hr style={{ border: `1px solid ${CustomColors.lightBlue}` }} />
-        <h2 className="profile_title">Setup your profile</h2>
+        <h2 className="profile_title">{firstTime ? "Setup your profile" : "My profile"}</h2>
       </div>
 
       <div className="profile_wrapper">

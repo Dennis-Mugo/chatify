@@ -1,22 +1,16 @@
 import React, { useContext, useState } from "react";
 import "./ChatLeft.css";
 import { ChatifyContext } from "../../context/context";
-import { Avatar, IconButton } from "@mui/material";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { Avatar, Button, IconButton } from "@mui/material";
 import CustomColors from "../../constants/colors";
 import { useNavigate } from "react-router-dom";
+import MoreMenu from "../MoreMenu/MoreMenu";
+import NotificationModal from "../NotificationModal/NotificationModal";
+import SearchFriendsModal from "../SearchModal/SearchFriendsModal";
 
 function ChatLeft(props) {
   const navigate = useNavigate();
-  const { currentUser, signOut } = useContext(ChatifyContext);
-  const [signoutLoading, setSignoutLoading] = useState(false);
-
-  const handleSignOut = async () => {
-    setSignoutLoading(true);
-    await signOut();
-    navigate("/signin");
-  };
+  const { currentUser } = useContext(ChatifyContext);
 
   const handleNavigate = (path) => {
     if (path == "/profile") {
@@ -42,14 +36,18 @@ function ChatLeft(props) {
           </IconButton>
         </div>
         <div className="chat_left_header_right">
-          <IconButton sx={{ marginRight: "10px" }}>
-            <NotificationsOutlinedIcon sx={{ color: CustomColors.blue }} />
-          </IconButton>
-          <IconButton sx={{ marginRight: "10px" }}>
-            <MoreVertIcon sx={{ color: CustomColors.blue }} />
-          </IconButton>
+          <NotificationModal />
+          <MoreMenu />
         </div>
       </div>
+      <SearchFriendsModal />
+      <div
+        style={{
+          margin: "10px auto",
+          width: "95%",
+          borderBottom: `1px solid ${CustomColors.lightBlue}`,
+        }}
+      />
     </div>
   );
 }
