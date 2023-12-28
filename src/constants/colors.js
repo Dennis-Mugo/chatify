@@ -7,6 +7,8 @@ const CustomColors = {
   white: "#FAFBFF",
   pureWhite: "#FFFFFF",
   lightGrey: "rgba(0, 0, 0, 0.24)",
+  textGrey: "rgba(0, 0, 0, 0.7)",
+  pink500: "#ff336650",
 };
 
 export default CustomColors;

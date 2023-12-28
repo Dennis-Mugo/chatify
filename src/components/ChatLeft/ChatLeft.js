@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import MoreMenu from "../MoreMenu/MoreMenu";
 import NotificationModal from "../NotificationModal/NotificationModal";
 import SearchFriendsModal from "../SearchModal/SearchFriendsModal";
+import ConnectionList from "../ConnectionList/ConnectionList";
 
 function ChatLeft(props) {
   const navigate = useNavigate();
@@ -48,6 +49,7 @@ function ChatLeft(props) {
           borderBottom: `1px solid ${CustomColors.lightBlue}`,
         }}
       />
+      <ConnectionList />
     </div>
   );
 }

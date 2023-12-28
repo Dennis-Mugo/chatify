@@ -1,0 +1,128 @@
+.friend_list_container {
+  height: calc(90vh - 182px);
+  /* border: 1px solid black; */
+  /* padding: 0 15px; */
+  overflow-y: scroll;
+}
+
+.friend_list_container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.friend_list_container {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.connection_container {
+  display: flex;
+  /* border: 1px solid black; */
+  height: 70px;
+  padding: 0 20px 0 0;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.connection_container:hover {
+  background-color: var(--white);
+}
+
+.connection_avatar {
+  flex: 20;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid black; */
+}
+
+.connection_content {
+  /* border: 1px solid black; */
+  flex: 60;
+  /* max-width: 65%; */
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.connection_auxiliary {
+  flex: 20;
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.connection_content p {
+  padding: 0;
+  margin: 0;
+}
+
+.connection_username {
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 5px 0;
+}
+
+.connection_lastmessage {
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+}
+
+.last_message_time {
+  font-size: 11px;
+  color: var(--textGrey);
+  font-family: "Nunito Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 5px;
+}
+
+.unread_badge,
+.unread_badge_hidden {
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: var(--blue);
+  color: var(--pureWhite);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.unread_badge_hidden {
+  opacity: 0;
+}
+
+.unread_badge_hidden p {
+  opacity: 0;
+}
+
+.unread_badge p {
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+}
+
+.conn_search_wrapper {
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  height: 35px;
+  align-items: center;
+  margin: 10px auto;
+  width: 90%;
+}
+
+.conn_search_input {
+  flex: 1;
+  height: 35px;
+  border: none;
+  outline: none;
+  background-color: rgba(0, 0, 0, 0);
+  font-family: "Mooli", sans-serif;
+}

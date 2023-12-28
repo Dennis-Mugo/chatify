@@ -3,27 +3,33 @@ import { createContext, useEffect, useState } from "react";
 import { db, storage } from "../firebase.config";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { uuid4 as v4 } from "uuid4";
-import { baseUrl } from "../constants/constants";
+import { baseUrl, getConnectionsUrl } from "../constants/constants";
 
 export const ChatifyContext = createContext();
 
 export const ChatifyProvider = ({ children }) => {
+  const [screenWidth, setScreenWidth] = useState(null);
   const [tempUser, setTempUser] = useState(false);
   const [currentUser, setCurrentUser] = useState(false);
+  const [connections, setConnections] = useState([]);
+  const [connectionsStatus, setConnectionsStatus] = useState("loading");
+  const [selectedFriend, setSelectedFriend] = useState(null);
 
+  let hasWindow = typeof window !== "undefined";
   useEffect(() => {
-    // (async () => {
-    //   let res = await fetch(`${baseUrl}/search_friends`, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ userId: "l", query: "nd" }),
-    //   });
-    //   res = await res.json();
-    //   console.log(res);
-    // })();
-  }, []);
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+    if (hasWindow) {
+      setScreenWidth(window.innerWidth);
+      window.addEventListener("resize", handleResize);
+    }
+    return () => window.removeEventListener("resize", handleResize);
+  }, [hasWindow]);
+
+  const clipWords = (words, num) => {
+    return words.length > num ? words.slice(0, num) + "..." : words;
+  };
 
   const storeTempUser = async (user) => {
     localStorage.setItem("tempUser", JSON.stringify(user));
@@ -110,9 +116,31 @@ export const ChatifyProvider = ({ children }) => {
     );
   };
 
+  const fetchConnections = async () => {
+    setConnectionsStatus("loading");
+    let res = await fetch(`${getConnectionsUrl}/get_connections`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId: currentUser.userId }),
+    });
+    res = await res.json();
+    // let res = [];
+    console.log(res);
+    setConnections(res);
+    if (!res.length) {
+      setConnectionsStatus("no results");
+    } else {
+      setConnectionsStatus("results");
+    }
+  };
+
   return (
     <ChatifyContext.Provider
       value={{
+        screenWidth,
+        clipWords,
         currentUser,
         setCurrentUser,
         tempUser,
@@ -124,6 +152,12 @@ export const ChatifyProvider = ({ children }) => {
         uploadFile,
         updateUserProfile,
         signOut,
+        fetchConnections,
+        connections,
+        connectionsStatus,
+        setConnectionsStatus,
+        selectedFriend,
+        setSelectedFriend,
       }}
     >
       {children}
