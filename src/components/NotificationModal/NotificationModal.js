@@ -1,4 +1,4 @@
-import { IconButton, Modal } from "@mui/material";
+import { IconButton, Modal, Tooltip } from "@mui/material";
 import React, { useState } from "react";
 import "./NotificationModal.css";
 import CustomColors from "../../constants/colors";
@@ -11,9 +11,11 @@ function NotificationModal(props) {
 
   return (
     <>
-      <IconButton onClick={handleClick} sx={{ marginRight: "10px" }}>
-        <NotificationsOutlinedIcon sx={{ color: CustomColors.blue }} />
-      </IconButton>
+      <Tooltip title="Notifications">
+        <IconButton onClick={handleClick} sx={{ marginRight: "10px" }}>
+          <NotificationsOutlinedIcon sx={{ color: CustomColors.blue }} />
+        </IconButton>
+      </Tooltip>
       <Modal
         open={open}
         onClose={handleClose}

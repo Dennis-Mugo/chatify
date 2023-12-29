@@ -5,9 +5,10 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useNavigate } from "react-router-dom";
 import { ChatifyContext } from "../../context/context";
 
-function MoreMenu(props) {
+function ChatMoreMenu(props) {
   const navigate = useNavigate();
-  const { currentUser, signOut } = useContext(ChatifyContext);
+  const { currentUser, signOut, setSelectedFriend } =
+    useContext(ChatifyContext);
   const [signoutLoading, setSignoutLoading] = useState(false);
   const [anchorElem, setAnchorElem] = useState(null);
   const [open, setOpen] = useState(false);
@@ -21,10 +22,12 @@ function MoreMenu(props) {
     setOpen(false);
   };
 
-  const handleSignOut = async () => {
-    setSignoutLoading(true);
-    await signOut();
-    navigate("/signin");
+  const handleUnfriend = async () => {};
+
+  const handleBlockChat = async () => {};
+
+  const handleCloseChat = () => {
+    setSelectedFriend(null);
   };
 
   const handleNavigate = (path) => {
@@ -46,24 +49,26 @@ function MoreMenu(props) {
         anchorEl={anchorElem}
         open={open}
         onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
         // MenuListProps={{
         //   'aria-labelledby': 'basic-button',
         // }}
       >
-        <MenuItem
-          sx={{ fontFamily: "Nunito" }}
-          onClick={() => {
-            handleNavigate("/profile");
-          }}
-        >
-          My Profile
+        <MenuItem sx={{ fontFamily: "Nunito" }} onClick={handleCloseChat}>
+          Close chat
         </MenuItem>
-        <MenuItem sx={{ fontFamily: "Nunito" }} onClick={handleSignOut}>
-          Logout
+        <MenuItem sx={{ fontFamily: "Nunito" }} onClick={handleUnfriend}>
+          Unfriend chat
+        </MenuItem>
+        <MenuItem sx={{ fontFamily: "Nunito" }} onClick={handleBlockChat}>
+          Block chat
         </MenuItem>
       </Menu>
     </>
   );
 }
 
-export default MoreMenu;
+export default ChatMoreMenu;
