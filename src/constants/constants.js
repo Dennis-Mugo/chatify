@@ -10,7 +10,9 @@ export const Time = {
     // console.log(nanoSeconds);
     let nano = parseInt(nanoSeconds);
     let d = new Date(nano);
-    return d.toLocaleTimeString("en-US", { hour12: true, timeStyle: "short" });
+    return d
+      .toLocaleTimeString("en-US", { hour12: true, timeStyle: "short" })
+      .toLowerCase();
   },
 
   relativeDate: (nanoSeconds) => {
@@ -29,6 +31,27 @@ export const Time = {
       return t.toLocaleDateString("en-GB", { weekday: "long" });
     } else {
       return t.toLocaleDateString();
+    }
+  },
+
+  bubbleRelativeDate: (nanoSeconds) => {
+    let nano = parseInt(nanoSeconds);
+    let now = Date.now();
+    let diff = now - nano;
+    let t = new Date(nano);
+
+    if (diff < 24 * 60 * 60 * 1000) {
+      return Time.getTime(nanoSeconds);
+    } else if (diff < 2 * 24 * 60 * 60 * 1000) {
+      return "Yesterday, " + Time.getTime(nanoSeconds);
+    } else if (diff < 7 * 24 * 60 * 60 * 1000) {
+      return (
+        t.toLocaleDateString("en-GB", { weekday: "long" }) +
+        ", " +
+        Time.getTime(nanoSeconds)
+      );
+    } else {
+      return t.toLocaleDateString() + ", " + Time.getTime(nanoSeconds);
     }
   },
 };

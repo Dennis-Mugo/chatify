@@ -76,6 +76,7 @@ export const ChatifyProvider = ({ children }) => {
 
   const signOut = async () => {
     localStorage.removeItem("uid");
+    setSelectedFriend(null);
     setCurrentUser(false);
   };
 
@@ -136,6 +137,19 @@ export const ChatifyProvider = ({ children }) => {
     }
   };
 
+  const sendChat = async (message) => {
+    let chatObj = {
+      dateCreated: Date.now().toString(),
+      message,
+      senderId: currentUser.userId,
+      receiverId: selectedFriend.userId,
+      status: "unread", //Could be unread or read
+    };
+    let chatId = v4();
+    let chatRef = doc(db, `chats/${chatId}`);
+    await setDoc(chatRef, chatObj);
+  };
+
   return (
     <ChatifyContext.Provider
       value={{
@@ -158,6 +172,7 @@ export const ChatifyProvider = ({ children }) => {
         setConnectionsStatus,
         selectedFriend,
         setSelectedFriend,
+        sendChat,
       }}
     >
       {children}

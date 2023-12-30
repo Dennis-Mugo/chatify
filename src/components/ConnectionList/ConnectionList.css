@@ -3,6 +3,7 @@
   /* border: 1px solid black; */
   /* padding: 0 15px; */
   overflow-y: scroll;
+  border-radius: 20px;
 }
 
 .friend_list_container::-webkit-scrollbar {

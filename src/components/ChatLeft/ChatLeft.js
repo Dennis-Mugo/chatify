@@ -41,7 +41,7 @@ function ChatLeft(props) {
           <MoreMenu />
         </div>
       </div>
-      <SearchFriendsModal />
+      <SearchFriendsModal anchor="chat_left" />
       <div
         style={{
           margin: "5px auto",

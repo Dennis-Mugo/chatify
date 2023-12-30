@@ -6,7 +6,7 @@ import {
   Skeleton,
   Tooltip,
 } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import "./SearchFriendsModal.css";
 import CustomColors from "../../constants/colors";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
@@ -19,7 +19,7 @@ import { db } from "../../firebase.config";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import { doc, setDoc } from "firebase/firestore";
 
-function SearchFriendsModal(props) {
+function SearchFriendsModal({ anchor }) {
   const { currentUser } = useContext(ChatifyContext);
   const [open, setOpen] = useState(false);
   const handleClick = () => setOpen(true);
@@ -28,6 +28,7 @@ function SearchFriendsModal(props) {
   const [query, setQuery] = useState("");
   const [queryResult, setQueryResult] = useState([]);
   const [resultContainer, setResultContainer] = useState("empty");
+  const submitRef = useRef();
 
   const handleQuery = async (e) => {
     setResultContainer("empty");
@@ -41,7 +42,12 @@ function SearchFriendsModal(props) {
     setResultContainer("empty");
   };
 
-  const handleSubmitQuery = async () => {
+  const handleClickSubmit = () => {
+    submitRef.current.click();
+  };
+
+  const handleSubmitQuery = async (e) => {
+    e.preventDefault();
     let key = query.trim();
     if (!key.length) {
       setQueryResult([]);
@@ -68,34 +74,51 @@ function SearchFriendsModal(props) {
   return (
     <>
       <div className="search_friends">
-        <Button
-          variant="text"
-          onClick={handleClick}
-          startIcon={
-            // <IconButton
-            //   sx={{
-            //     backgroundColor: CustomColors.lightBlue,
-            //     boxShadow:
-            //       "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
-            //   }}
-            // >
-            <SearchSharpIcon
-              style={{ fontSize: 25, color: CustomColors.blue }}
-            />
-            // </IconButton>
-          }
-          sx={{
-            fontFamily: "Nunito",
-            textTransform: "none",
-            fontSize: "14px",
-            width: "100%",
-            display: "flex",
-            justifyContent: "flex-start",
-            paddingLeft: "27px",
-          }}
-        >
-          &nbsp;&nbsp;Search new friends
-        </Button>
+        {anchor === "chat_left" ? (
+          <Button
+            variant="text"
+            onClick={handleClick}
+            startIcon={
+              // <IconButton
+              //   sx={{
+              //     backgroundColor: CustomColors.lightBlue,
+              //     boxShadow:
+              //       "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
+              //   }}
+              // >
+              <SearchSharpIcon
+                style={{ fontSize: 25, color: CustomColors.blue }}
+              />
+              // </IconButton>
+            }
+            sx={{
+              fontFamily: "Nunito",
+              textTransform: "none",
+              fontSize: "14px",
+              width: "100%",
+              display: "flex",
+              justifyContent: "flex-start",
+              paddingLeft: "27px",
+            }}
+          >
+            &nbsp;&nbsp;Search new friends
+          </Button>
+        ) : anchor === "chat_center" ? (
+          <Button
+            onClick={handleClick}
+            variant="contained"
+            style={{
+              textTransform: "none",
+              fontFamily: "Nunito",
+              borderRadius: "20px",
+              margin: "20px 0",
+            }}
+          >
+            Search friend
+          </Button>
+        ) : (
+          <></>
+        )}
       </div>
       <Modal
         open={open}
@@ -105,7 +128,10 @@ function SearchFriendsModal(props) {
         <div className="modal_container">
           <div className="search_friends_header">
             <div className="search_friends_left">
-              <div className="search_input_shadow">
+              <form
+                className="search_input_shadow"
+                onSubmit={handleSubmitQuery}
+              >
                 <input
                   className="search_input"
                   type="text"
@@ -121,11 +147,12 @@ function SearchFriendsModal(props) {
                   <></>
                 )}
                 <Tooltip title="Search">
-                  <IconButton onClick={handleSubmitQuery}>
+                  <IconButton onClick={handleClickSubmit}>
                     <SearchSharpIcon sx={{ color: CustomColors.dark }} />
                   </IconButton>
                 </Tooltip>
-              </div>
+                <input type="submit" hidden ref={submitRef} />
+              </form>
             </div>
             <div className="search_friends_right">
               <Tooltip title="Close">

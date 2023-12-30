@@ -43,7 +43,7 @@ function AttachmentMenu(props) {
       <Tooltip title="Attach">
         <IconButton
           onClick={handleClick}
-          sx={{ backgroundColor: CustomColors.lightBlue }}
+          sx={{ backgroundColor: CustomColors.lightBlue, marginLeft: "10px" }}
         >
           <AddRoundedIcon sx={{ color: CustomColors.blue }} />
         </IconButton>
