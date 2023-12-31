@@ -10,7 +10,7 @@ import ChatRight from "../../components/ChatRight/ChatRight";
 
 function Chat(props) {
   const navigate = useNavigate();
-  const { currentUser, signOut } = useContext(ChatifyContext);
+  const { currentUser, signOut, selectedFriend } = useContext(ChatifyContext);
   const [signoutLoading, setSignoutLoading] = useState(false);
   console.log(currentUser);
 
@@ -28,8 +28,8 @@ function Chat(props) {
     navigate(path);
   };
 
-  return (
-    <div className="chat_container">
+  return (selectedFriend ?
+    (<div className="chat_container">
         <div className="chat_left_container" style={{flex: "75"}}>
             <div className="chat_left_shadow">
                 <ChatLeft style={{flex: "40"}} />
@@ -38,7 +38,18 @@ function Chat(props) {
         </div>
       
       <ChatRight style={{flex: "25"}} />
-    </div>
+    </div>) : (
+      <div className="chat_container">
+      <div className="chat_left_container" style={{flex: "100"}}>
+          <div className="chat_left_shadow">
+              <ChatLeft style={{flex: "40"}} />
+              <ChatCenter style={{flex: "60"}} />
+          </div>
+      </div>
+    
+    
+  </div>
+    )
   );
 }
 

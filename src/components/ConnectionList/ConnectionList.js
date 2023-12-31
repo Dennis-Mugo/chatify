@@ -138,6 +138,8 @@ const ConnectionListItem = ({ connection }) => {
     setSelectedFriend(connection);
   };
 
+  const hasLastMessage = Object.keys(connection?.lastMessage).length > 0;
+
   return (
     <div
       className="connection_container"
@@ -157,30 +159,48 @@ const ConnectionListItem = ({ connection }) => {
       <div className="connection_content">
         <p className="connection_username">{connection?.userName}</p>
         <p className="connection_lastmessage">
-          {clipWords(connection?.lastMessage?.content, 25)}
+          {hasLastMessage
+            ? clipWords(connection?.lastMessage?.message, 25)
+            : "Click to start chatting"}
         </p>
       </div>
-      <div className="connection_auxiliary">
-        <p
-          className="last_message_time"
-          style={{
-            color: connection?.unreadCount
-              ? CustomColors.blue
-              : CustomColors.textGrey,
-          }}
-        >
-          {Time.relativeDate(connection?.lastMessage?.dateCreated)}
-        </p>
-        {connection?.unreadCount ? (
-          <div className="unread_badge">
-            <p>{connection?.unreadCount}</p>
-          </div>
-        ) : (
+      {hasLastMessage ? (
+        <div className="connection_auxiliary">
+          <p
+            className="last_message_time"
+            style={{
+              color: connection?.unreadCount
+                ? CustomColors.blue
+                : CustomColors.textGrey,
+            }}
+          >
+            {Time.relativeDate(connection?.lastMessage?.dateCreated)}
+          </p>
+          {connection?.unreadCount ? (
+            <div className="unread_badge">
+              <p>{connection?.unreadCount}</p>
+            </div>
+          ) : (
+            <div className="unread_badge_hidden">
+              <p>{connection?.unreadCount}</p>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="connection_auxiliary">
+          <p
+            className="last_message_time"
+            style={{
+              color: "rgba(0,0,0,0)",
+            }}
+          >
+            00:00 pm
+          </p>
           <div className="unread_badge_hidden">
-            <p>{connection?.unreadCount}</p>
+            <p>0</p>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

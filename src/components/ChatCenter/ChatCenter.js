@@ -68,9 +68,17 @@ function ChatCenter(props) {
 const DefaultChat = () => {
   return (
     <div
-      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        // border: "1px solid black",
+        height: "90vh",
+        borderRadius: "0 20px 20px 0",
+        overflowY: "scroll",
+      }}
     >
-      <img src={defaultImage} width="50%" style={{ margin: "10vh 0 0" }} />
+      <img src={defaultImage} width="40%" style={{ margin: "10vh 0 0" }} />
       <h2
         style={{
           padding: 0,

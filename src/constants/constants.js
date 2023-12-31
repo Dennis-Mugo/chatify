@@ -21,7 +21,7 @@ export const Time = {
     let diff = now - nano;
     let t = new Date(nano);
 
-    if (diff < 5 * 60 * 60 * 1000) {
+    if (diff < 5 * 60 * 1000) {
       return "Now";
     } else if (diff < 24 * 60 * 60 * 1000) {
       return Time.getTime(nanoSeconds);

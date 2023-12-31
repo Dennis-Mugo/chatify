@@ -1,4 +1,13 @@
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { createContext, useEffect, useState } from "react";
 import { db, storage } from "../firebase.config";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
@@ -26,6 +35,34 @@ export const ChatifyProvider = ({ children }) => {
     }
     return () => window.removeEventListener("resize", handleResize);
   }, [hasWindow]);
+
+  useEffect(() => {
+    if (!currentUser) return;
+
+    let connectionsQuery = query(
+      collection(db, `connections`),
+      where("user2", "==", currentUser.userId)
+    );
+    const unsubConn = onSnapshot(connectionsQuery, async (snapshot) => {
+      await fetchConnections(false);
+    });
+    return unsubConn;
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (!currentUser) return;
+
+    let connectionsQuery = query(
+      collection(db, `chats`),
+      where("receiverId", "==", currentUser.userId),
+      where("status", "==", "unread")
+    );
+    const unsubConn = onSnapshot(connectionsQuery, async (snapshot) => {
+      console.log("new message");
+      await fetchConnections(false);
+    });
+    return unsubConn;
+  }, [currentUser]);
 
   const clipWords = (words, num) => {
     return words.length > num ? words.slice(0, num) + "..." : words;
@@ -117,8 +154,7 @@ export const ChatifyProvider = ({ children }) => {
     );
   };
 
-  const fetchConnections = async () => {
-    setConnectionsStatus("loading");
+  const sendFetchConnectionsRequest = async () => {
     let res = await fetch(`${getConnectionsUrl}/get_connections`, {
       method: "POST",
       headers: {
@@ -127,8 +163,13 @@ export const ChatifyProvider = ({ children }) => {
       body: JSON.stringify({ userId: currentUser.userId }),
     });
     res = await res.json();
-    // let res = [];
     console.log(res);
+    return res;
+  };
+
+  const fetchConnections = async (showLoading = true) => {
+    if (showLoading) setConnectionsStatus("loading");
+    let res = await sendFetchConnectionsRequest();
     setConnections(res);
     if (!res.length) {
       setConnectionsStatus("no results");
@@ -136,6 +177,8 @@ export const ChatifyProvider = ({ children }) => {
       setConnectionsStatus("results");
     }
   };
+
+  const initializeConnectionsSnapshot = async () => {};
 
   const sendChat = async (message) => {
     let chatObj = {
