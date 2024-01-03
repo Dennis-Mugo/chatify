@@ -2,6 +2,7 @@
   width: 60%;
   height: 90vh;
   background-color: var(--white);
+  /* background-color: rgba(255, 255, 255, 0.9); */
   border-radius: 20px;
 }
 
@@ -33,6 +34,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .flex_center {
@@ -74,6 +76,7 @@
   outline: none;
   border: none;
   font-size: 16px;
+  /* border: 1px solid black; */
 }
 
 .att_modal_send {

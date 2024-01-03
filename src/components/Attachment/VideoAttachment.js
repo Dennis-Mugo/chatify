@@ -2,12 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import "./Attachment.css";
 import CustomColors from "../../constants/colors";
 import { ChatifyContext } from "../../context/context";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Badge, Box, CircularProgress, Typography } from "@mui/material";
 import uuid4 from "uuid4";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase.config";
+import VideocamIcon from "@mui/icons-material/Videocam";
 
-function PhotoAttachment({
+function VideoAttachment({
   selected,
   onClick,
   index,
@@ -27,13 +28,13 @@ function PhotoAttachment({
       await uploadFile(
         fileObj.file,
         sendChat,
-        "chat_images",
+        "chat_videos",
         setUploadProgress
       );
     })();
   }, [uploading]);
 
-  const sendChat = async (photoUrl) => {
+  const sendChat = async (videoUrl) => {
     let chatObj;
     let chatMessage = message.trim();
     let messageId = uuid4();
@@ -43,8 +44,8 @@ function PhotoAttachment({
         receiverId: selectedFriend.userId,
         dateCreated: Date.now().toString(),
         message: chatMessage,
-        attachmentType: "image",
-        attachmentUrl: photoUrl,
+        attachmentType: "video",
+        attachmentUrl: videoUrl,
         size: fileObj.size,
         status: "unread",
       };
@@ -54,15 +55,15 @@ function PhotoAttachment({
         receiverId: selectedFriend.userId,
         dateCreated: Date.now().toString(),
         message: "",
-        attachmentType: "image",
-        attachmentUrl: photoUrl,
+        attachmentType: "video",
+        attachmentUrl: videoUrl,
         size: fileObj.size,
         status: "unread",
       };
     }
     let chatRef = doc(db, `chats/${messageId}`);
     await setDoc(chatRef, chatObj);
-    setUploadResult((prev) => [...prev, photoUrl]);
+    setUploadResult((prev) => [...prev, videoUrl]);
   };
 
   return (
@@ -73,9 +74,9 @@ function PhotoAttachment({
         border: selected
           ? `3px solid ${CustomColors.blue}`
           : `1px solid ${CustomColors.lightGrey}`,
-        backgroundImage: `url(${fileObj.localUrl})`,
+
         backgroundPosition: "center",
-        backgroundSize: "cover",
+        backgroundSize: "100%",
         backgroundRepeat: "no-repeat",
       }}
     >
@@ -91,7 +92,12 @@ function PhotoAttachment({
           <CircularProgressWithLabel value={uploadProgress} />
         </div>
       ) : (
-        <></>
+        <Badge badgeContent={index + 1}>
+          <VideocamIcon
+            sx={{ color: CustomColors.textGrey }}
+            fontSize="small"
+          />
+        </Badge>
       )}
 
       {/* <img
@@ -136,4 +142,4 @@ function CircularProgressWithLabel(props) {
   );
 }
 
-export default PhotoAttachment;
+export default VideoAttachment;

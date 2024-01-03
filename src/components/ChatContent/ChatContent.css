@@ -129,10 +129,11 @@
   align-items: center;
   margin-bottom: 10px;
 }
-.image_att {
+.image_att,
+.video_att {
   max-height: 180px;
+  /* min-width: 200px; */
   border-radius: 15px;
   background-color: var(--lightGrey);
   height: 180px;
-  margin: 0 auto;
 }

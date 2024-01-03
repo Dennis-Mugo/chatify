@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Attachment.css";
 import {
   Button,
@@ -21,6 +21,7 @@ import CustomColors from "../../constants/colors";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import PhotoAttachment from "./PhotoAttachment";
 import uuid4 from "uuid4";
+import VideoAttachment from "./VideoAttachment";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -46,11 +47,23 @@ function AttachmentModal({ label }) {
   const [uploadResult, setUploadResult] = useState([]);
   const [message, setMessage] = useState("");
 
+  const inputRef = useRef();
+
   useEffect(() => {
     setIsPhoto(label === "Photo");
     setIsDoc(label === "Document");
     setIsVideo(label === "Video");
   }, [label]);
+
+  const reset = () => {
+    setUploading(false);
+    setFilePreviews([]);
+    setUploadResult([]);
+    setStageStatus("empty");
+    setSelectedPreview(0);
+    setMessage("");
+    setOpen(false);
+  };
 
   useEffect(() => {
     console.log(uploadResult);
@@ -58,16 +71,15 @@ function AttachmentModal({ label }) {
       filePreviews.length > 0 &&
       filePreviews.length === uploadResult.length
     ) {
-      setUploading(false);
-      setFilePreviews([]);
-      setUploadResult([]);
-      setStageStatus("empty");
-      setMessage("");
-      setOpen(false);
+      reset();
     }
   }, [uploadResult]);
 
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    if (uploading) return;
+    setOpen(false);
+    reset();
+  };
 
   const handleOpen = () => setOpen(true);
 
@@ -94,17 +106,32 @@ function AttachmentModal({ label }) {
 
   const handleFileChange = (e) => {
     if (!e.target.files.length) return;
-    let allFiles = toList(e.target.files);
+    let listFiles = toList(e.target.files);
+    e.target.value = "";
+    let allFiles = filePreviews.concat(listFiles);
     console.log(allFiles);
     setSelectedPreview(allFiles.length - 1);
     setFilePreviews(allFiles);
     if (isPhoto) {
       setStageStatus("preview_photo");
+    } else if (isVideo) {
+      setStageStatus("preview_video");
     }
   };
 
   const handleSelectorClick = (index) => {
     setSelectedPreview(index);
+  };
+
+  const handleFileRemove = (uid) => {
+    let newFiles = filePreviews.filter((file) => file.uid !== uid);
+    if (!newFiles.length) {
+      setStageStatus("empty");
+      setSelectedPreview(0);
+    } else {
+      setSelectedPreview(newFiles.length - 1);
+    }
+    setFilePreviews(newFiles);
   };
 
   const handleSend = () => {
@@ -116,7 +143,13 @@ function AttachmentModal({ label }) {
     <>
       <MenuItem onClick={handleOpen}>
         <ListItemIcon>
-          {isPhoto ? <PhotoLibraryIcon fontSize="small" /> : <></>}
+          {isPhoto ? (
+            <PhotoLibraryIcon fontSize="small" />
+          ) : isVideo ? (
+            <VideoLibraryIcon fontSize="small" />
+          ) : (
+            <></>
+          )}
         </ListItemIcon>
         <ListItemText>{label}</ListItemText>
       </MenuItem>
@@ -163,7 +196,15 @@ function AttachmentModal({ label }) {
                 </Button>
               </div>
             ) : stageStatus === "preview_photo" ? (
-              <ImagePreview file={filePreviews[selectedFilePreview]} />
+              <ImagePreview
+                file={filePreviews[selectedFilePreview]}
+                handleRemove={handleFileRemove}
+              />
+            ) : stageStatus === "preview_video" ? (
+              <VideoPreview
+                file={filePreviews[selectedFilePreview]}
+                handleRemove={handleFileRemove}
+              />
             ) : (
               <></>
             )}
@@ -190,7 +231,15 @@ function AttachmentModal({ label }) {
                           message={message}
                         />
                       ) : (
-                        <></>
+                        <VideoAttachment
+                          fileObj={fileObj}
+                          onClick={handleSelectorClick}
+                          index={i}
+                          selected={selectedFilePreview === i}
+                          uploading={uploading}
+                          setUploadResult={setUploadResult}
+                          message={message}
+                        />
                       )}
                     </div>
                   ))}
@@ -230,10 +279,54 @@ function AttachmentModal({ label }) {
   );
 }
 
-const ImagePreview = ({ file }) => {
+const ImagePreview = ({ file, handleRemove }) => {
   return (
     <div className="att_modal_stage">
-      <img style={{ maxHeight: "45vh" }} src={file.localUrl} alt={file.name} />
+      <img
+        style={{ maxHeight: "45vh" }}
+        src={file?.localUrl}
+        alt={file?.name}
+      />
+      <Tooltip
+        title="Remove"
+        sx={{ position: "absolute", top: "15px", right: "15px" }}
+      >
+        <IconButton
+          onClick={() => {
+            handleRemove(file?.uid);
+          }}
+        >
+          <CloseRoundedIcon color="error" />
+        </IconButton>
+      </Tooltip>
+    </div>
+  );
+};
+
+const VideoPreview = ({ file, handleRemove }) => {
+  return (
+    <div className="att_modal_stage">
+      <video
+        style={{ maxHeight: "45vh" }}
+        autoPlay
+        controls
+        src={file.localUrl}
+      >
+        {/* <source src={file.localUrl} type="video/mp4" /> */}
+        Your browser does not support the video tag.
+      </video>
+      <Tooltip
+        title="Remove"
+        sx={{ position: "absolute", top: "15px", right: "15px" }}
+      >
+        <IconButton
+          onClick={() => {
+            handleRemove(file?.uid);
+          }}
+        >
+          <CloseRoundedIcon color="error" />
+        </IconButton>
+      </Tooltip>
     </div>
   );
 };

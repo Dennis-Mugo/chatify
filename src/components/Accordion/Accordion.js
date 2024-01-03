@@ -21,7 +21,7 @@ function Accordion({ Header, Body, alreadyVisible }) {
               //   opacity: state === "entered" ? 1 : 0,
               //   border: "1px solid black",
               height: state === "entered" ? "50vh" : "60px",
-              minHeight: "60px",
+              minHeight: state === "entered" ? "50vh" : "60px",
               overflowY: state === "entered" ? "scroll" : "hidden",
               width: "90%",
               margin: "10px 0",

@@ -138,6 +138,15 @@ const Message = ({ messageObj }) => {
                 <div className="image_att_wrapper">
                   <img src={messageObj?.attachmentUrl} className="image_att" />
                 </div>
+              ) : messageType === "video" ? (
+                <div className="image_att_wrapper">
+                  <video
+                    src={messageObj?.attachmentUrl}
+                    className="video_att"
+                    autoPlay={false}
+                    controls
+                  />
+                </div>
               ) : (
                 <></>
               )}
@@ -155,6 +164,15 @@ const Message = ({ messageObj }) => {
               {messageType === "image" ? (
                 <div className="image_att_wrapper">
                   <img src={messageObj?.attachmentUrl} className="image_att" />
+                </div>
+              ) : messageType === "video" ? (
+                <div className="image_att_wrapper">
+                  <video
+                    src={messageObj?.attachmentUrl}
+                    className="video_att"
+                    autoPlay={false}
+                    controls
+                  />
                 </div>
               ) : (
                 <></>
