@@ -4,10 +4,12 @@ import { ChatifyContext } from "../../context/context";
 import {
   and,
   collection,
+  doc,
   onSnapshot,
   or,
   orderBy,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { db } from "../../firebase.config";
@@ -33,7 +35,10 @@ function ChatContent(props) {
 
   useEffect(() => {
     if (chatContentStatus === "friend_chats") {
-      dummyRef.current?.scrollIntoView({ behavior: "smooth" });
+      dummyRef.current
+        ?.scrollIntoView
+        // { behavior: "smooth" }
+        ();
     }
   }, [selectedFriend, chatContentStatus, messageList]);
 
@@ -91,8 +96,31 @@ function ChatContent(props) {
 }
 
 const Message = ({ messageObj }) => {
-  const { currentUser, selectedFriend } = useContext(ChatifyContext);
+  const { currentUser, selectedFriend, fetchConnections } =
+    useContext(ChatifyContext);
   let myMessage = messageObj.senderId === currentUser?.userId;
+  //text, image, video, document
+  const [messageType, setMessageType] = useState(
+    messageObj?.attachmentType || "text"
+  );
+
+  useEffect(() => {
+    if (messageObj?.attachmentType) {
+      let attType = messageObj?.attachmentType;
+      setMessageType(attType);
+    } else {
+      setMessageType("text");
+    }
+  }, [messageObj]);
+
+  useEffect(() => {
+    (async () => {
+      if (myMessage || messageObj.status == "read") return;
+      let messageRef = doc(db, `chats/${messageObj.messageId}`);
+      await updateDoc(messageRef, { status: "read" });
+      await fetchConnections(false);
+    })();
+  }, [messageObj]);
 
   return (
     <>
@@ -106,6 +134,13 @@ const Message = ({ messageObj }) => {
               />
             </div>
             <div className="chat_bubble_left">
+              {messageType === "image" ? (
+                <div className="image_att_wrapper">
+                  <img src={messageObj?.attachmentUrl} className="image_att" />
+                </div>
+              ) : (
+                <></>
+              )}
               <p className="chat_bubble_message">{messageObj?.message}</p>
               <p className="chat_bubble_timestamp">
                 {Time.bubbleRelativeDate(messageObj?.dateCreated)}
@@ -117,6 +152,13 @@ const Message = ({ messageObj }) => {
         <div className="message_container_right">
           <div className="message_wrapper">
             <div className="chat_bubble_right">
+              {messageType === "image" ? (
+                <div className="image_att_wrapper">
+                  <img src={messageObj?.attachmentUrl} className="image_att" />
+                </div>
+              ) : (
+                <></>
+              )}
               <p className="chat_bubble_right_message">{messageObj?.message}</p>
               <p className="chat_bubble_right_timestamp">
                 {Time.bubbleRelativeDate(messageObj?.dateCreated)}

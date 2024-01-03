@@ -32,7 +32,11 @@ function ChatLeft(props) {
             <Avatar
               src={currentUser?.photoUrl}
               alt={currentUser?.userName}
-              sx={{ width: 46, height: 46 }}
+              sx={{
+                width: 46,
+                height: 46,
+                backgroundColor: CustomColors.lightGrey,
+              }}
             />
           </IconButton>
         </div>

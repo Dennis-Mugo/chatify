@@ -15,6 +15,7 @@ import { ChatifyContext } from "../../context/context";
 import DescriptionIcon from "@mui/icons-material/Description";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
+import AttachmentModal from "../Attachment/AttachmentModal";
 
 function AttachmentMenu(props) {
   const navigate = useNavigate();
@@ -70,12 +71,7 @@ function AttachmentMenu(props) {
           </ListItemIcon>
           <ListItemText>Video</ListItemText>
         </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <PhotoLibraryIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>Photo</ListItemText>
-        </MenuItem>
+        <AttachmentModal label="Photo" />
         {/* </MenuList> */}
       </Menu>
     </>

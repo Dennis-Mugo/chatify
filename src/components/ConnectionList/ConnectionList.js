@@ -5,6 +5,9 @@ import { Avatar, Skeleton } from "@mui/material";
 import { Time } from "../../constants/constants";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import CustomColors from "../../constants/colors";
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import VideocamIcon from "@mui/icons-material/Videocam";
+import DescriptionIcon from "@mui/icons-material/Description";
 
 function ConnectionList(props) {
   const {
@@ -133,12 +136,24 @@ const ConnectionListItem = ({ connection }) => {
   const { clipWords, setSelectedFriend, selectedFriend } =
     useContext(ChatifyContext);
   const [hovered, setHovered] = useState(false);
+  const [lastMessageType, setLastmessageType] = useState("text");
+  //text, image, video, document
+  const hasLastMessage = Object.keys(connection?.lastMessage).length > 0;
+
+  useEffect(() => {
+    if (!hasLastMessage) return;
+    let lastMessage = connection?.lastMessage;
+    if (lastMessage?.attachmentType) {
+      let attType = lastMessage?.attachmentType;
+      setLastmessageType(attType);
+    } else {
+      setLastmessageType("text");
+    }
+  }, [connection]);
 
   const handleFriendClick = () => {
     setSelectedFriend(connection);
   };
-
-  const hasLastMessage = Object.keys(connection?.lastMessage).length > 0;
 
   return (
     <div
@@ -154,15 +169,56 @@ const ConnectionListItem = ({ connection }) => {
       onMouseLeave={(e) => setHovered(false)}
     >
       <div className="connection_avatar">
-        <Avatar src={connection?.photoUrl} alt={connection?.userName} />
+        <Avatar
+          src={connection?.photoUrl}
+          sx={{ backgroundColor: CustomColors.lightGrey }}
+          alt={connection?.userName}
+        />
       </div>
       <div className="connection_content">
         <p className="connection_username">{connection?.userName}</p>
-        <p className="connection_lastmessage">
-          {hasLastMessage
-            ? clipWords(connection?.lastMessage?.message, 25)
-            : "Click to start chatting"}
-        </p>
+        {lastMessageType === "text" ? (
+          <p className="connection_lastmessage">
+            {hasLastMessage
+              ? clipWords(connection?.lastMessage?.message, 25)
+              : "Click to start chatting"}
+          </p>
+        ) : lastMessageType === "image" ? (
+          <div className="connection_message_att">
+            <PhotoCameraIcon
+              sx={{
+                fontSize: "17px",
+                color: CustomColors.textGrey,
+                marginRight: "5px",
+              }}
+            />
+            <p>Photo</p>
+          </div>
+        ) : lastMessageType === "video" ? (
+          <div className="connection_message_att">
+            <VideocamIcon
+              sx={{
+                fontSize: "17px",
+                color: CustomColors.textGrey,
+                marginRight: "5px",
+              }}
+            />
+            <p>Video</p>
+          </div>
+        ) : lastMessageType === "document" ? (
+          <div className="connection_message_att">
+            <DescriptionIcon
+              sx={{
+                fontSize: "17px",
+                color: CustomColors.textGrey,
+                marginRight: "5px",
+              }}
+            />
+            <p>Document</p>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
       {hasLastMessage ? (
         <div className="connection_auxiliary">

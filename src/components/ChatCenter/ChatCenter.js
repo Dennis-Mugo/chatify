@@ -24,6 +24,7 @@ import AttachmentMenu from "../MoreMenu/AttachmentMenu";
 import defaultImage from "../../assets/chat_default.png";
 import LockIcon from "@mui/icons-material/Lock";
 import SearchFriendsModal from "../SearchModal/SearchFriendsModal";
+import ChatHeader from "./ChatHeader";
 
 function ChatCenter(props) {
   const { selectedFriend, setSelectedFriend } = useContext(ChatifyContext);
@@ -54,7 +55,11 @@ function ChatCenter(props) {
         <DefaultChat />
       ) : chatStatus === "user_result" ? (
         <>
-          <ChatHeader realTimeFriend={friend} setChatStatus={setChatStatus} />
+          <ChatHeader
+            realTimeFriend={friend}
+            setChatStatus={setChatStatus}
+            showMenu={true}
+          />
           <ChatContent />
           <ChatFooter />
         </>
@@ -105,33 +110,6 @@ const DefaultChat = () => {
         <LockIcon sx={{ color: CustomColors.grey, fontSize: "14px" }} />
         Your private messages are end-to-end encrypted
       </p>
-    </div>
-  );
-};
-
-const ChatHeader = ({ realTimeFriend, setChatStatus }) => {
-  const { selectedFriend } = useContext(ChatifyContext);
-
-  return (
-    <div className="chat_header">
-      <div className="chat_header_avatar">
-        <Avatar src={selectedFriend?.photoUrl} alt={selectedFriend?.userName} />
-      </div>
-      <div className="chat_header_right">
-        <div className="chat_header_right_left">
-          <p className="chat_header_username">{selectedFriend?.userName}</p>
-          <p className="chat_header_online">Online</p>
-        </div>
-        <div className="chat_header_right_right">
-          {/* <Tooltip title="Search">
-            <IconButton>
-              <SearchSharpIcon sx={{ color: CustomColors.blue }} />
-            </IconButton>
-          </Tooltip> */}
-
-          <ChatMoreMenu setChatStatus={setChatStatus} />
-        </div>
-      </div>
     </div>
   );
 };

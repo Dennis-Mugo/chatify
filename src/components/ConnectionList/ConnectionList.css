@@ -127,3 +127,15 @@
   background-color: rgba(0, 0, 0, 0);
   font-family: "Mooli", sans-serif;
 }
+
+.connection_message_att {
+  display: flex;
+  align-items: center;
+}
+
+.connection_message_att p {
+  margin: 0;
+  padding: 0;
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+}

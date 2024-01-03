@@ -1,0 +1,111 @@
+.att_modal_container {
+  width: 60%;
+  height: 90vh;
+  background-color: var(--white);
+  border-radius: 20px;
+}
+
+.att_modal_header {
+  display: flex;
+  /* border: 1px slid black; */
+}
+
+.att_modal_close {
+  /* border: 1px solid black; */
+  flex: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.att_modal_body {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.att_modal_stage {
+  width: 80%;
+  height: 45vh;
+  margin: 15px;
+  border: 1px dashed var(--blue);
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex_center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.att_footer_container {
+  /* border: 1px solid black; */
+  width: 90%;
+  display: flex;
+}
+
+.att_modal_selector {
+  /* border: 1px solid black; */
+  flex: 90;
+  display: flex;
+  justify-content: center;
+}
+
+.att_modal_shadow {
+  /* border: 1px solid black; */
+  width: 60%;
+  height: 48px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  background-color: var(--pureWhite);
+  margin-bottom: 15px;
+}
+
+.att_modal_shadow input {
+  flex: 1;
+  font-family: "Mooli", sans-serif;
+  outline: none;
+  border: none;
+  font-size: 16px;
+}
+
+.att_modal_send {
+  /* border: 1px slid black; */
+  flex: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.att_modal_send_btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  background-color: var(--blue);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+.att_modal_select {
+  width: 52px;
+  height: 52px;
+  border-radius: 5px;
+  border: 1px solid var(--grey);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: var(--lightBlue);
+  margin-right: 10px;
+}

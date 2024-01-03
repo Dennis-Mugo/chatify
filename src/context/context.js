@@ -52,13 +52,12 @@ export const ChatifyProvider = ({ children }) => {
   useEffect(() => {
     if (!currentUser) return;
 
-    let connectionsQuery = query(
+    let chatsQuery = query(
       collection(db, `chats`),
-      where("receiverId", "==", currentUser.userId),
-      where("status", "==", "unread")
+      where("receiverId", "==", currentUser.userId)
     );
-    const unsubConn = onSnapshot(connectionsQuery, async (snapshot) => {
-      console.log("new message");
+    const unsubConn = onSnapshot(chatsQuery, async (snapshot) => {
+      // console.log("new message");
       await fetchConnections(false);
     });
     return unsubConn;
@@ -177,8 +176,6 @@ export const ChatifyProvider = ({ children }) => {
       setConnectionsStatus("results");
     }
   };
-
-  const initializeConnectionsSnapshot = async () => {};
 
   const sendChat = async (message) => {
     let chatObj = {
