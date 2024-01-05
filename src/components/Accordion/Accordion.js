@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Transition } from "react-transition-group";
 import CustomColors from "../../constants/colors";
 
-function Accordion({ Header, Body, alreadyVisible }) {
+function Accordion({ Header, Body, alreadyVisible, onRefresh }) {
   const [isVisible, setIsVisible] = useState(alreadyVisible);
 
   const handleButtonClick = () => {
@@ -30,7 +30,11 @@ function Accordion({ Header, Body, alreadyVisible }) {
               backgroundColor: CustomColors.lightBlue,
             }}
           >
-            <Header state={state} onClick={handleButtonClick} />
+            <Header
+              state={state}
+              onClick={handleButtonClick}
+              onRefresh={onRefresh}
+            />
             {Body}
           </div>
         )}

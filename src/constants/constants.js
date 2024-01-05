@@ -55,3 +55,21 @@ export const Time = {
     }
   },
 };
+
+export const getFileSize = (bytes) => {
+  let kilobyte = 1024;
+  if (bytes < kilobyte) {
+    return bytes.toString() + " B";
+  } else if (bytes <= Math.pow(kilobyte, 2)) {
+    return parseInt(bytes / Math.pow(kilobyte, 1)).toString() + " KB";
+  } else if (bytes <= Math.pow(kilobyte, 3)) {
+    return parseInt(bytes / Math.pow(kilobyte, 2)).toString() + " MB";
+  } else if (bytes <= Math.pow(kilobyte, 4)) {
+    return parseInt(bytes / Math.pow(kilobyte, 3)).toString() + " GB";
+  } else if (bytes <= Math.pow(kilobyte, 5)) {
+    return parseInt(bytes / Math.pow(kilobyte, 4)).toString() + " TB";
+  }
+};
+
+export const allowedDocumentFiles =
+  ".xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf,.rtf,.zip,.php";

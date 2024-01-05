@@ -13,8 +13,13 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../firebase.config";
-import { Avatar, CircularProgress } from "@mui/material";
-import { Time } from "../../constants/constants";
+import { Avatar, CircularProgress, IconButton } from "@mui/material";
+import { Time, getFileSize } from "../../constants/constants";
+import { Link } from "react-router-dom";
+import CustomColors from "../../constants/colors";
+import FileCard from "../FileCard/FileCard";
+import { PiChecks, PiChecksBold } from "react-icons/pi";
+import { DoneAllRounded, DoneRounded } from "@mui/icons-material";
 
 function ChatContent(props) {
   const { currentUser, selectedFriend } = useContext(ChatifyContext);
@@ -96,10 +101,10 @@ function ChatContent(props) {
 }
 
 const Message = ({ messageObj }) => {
-  const { currentUser, selectedFriend, fetchConnections } =
+  const { currentUser, selectedFriend, fetchConnections, clipWords } =
     useContext(ChatifyContext);
   let myMessage = messageObj.senderId === currentUser?.userId;
-  //text, image, video, document
+  //text, image, video, doc
   const [messageType, setMessageType] = useState(
     messageObj?.attachmentType || "text"
   );
@@ -130,7 +135,11 @@ const Message = ({ messageObj }) => {
             <div className="chat_avatar">
               <Avatar
                 src={selectedFriend?.photoUrl}
-                sx={{ width: 35, height: 35 }}
+                sx={{
+                  width: 35,
+                  height: 35,
+                  backgroundColor: CustomColors.lightGrey,
+                }}
               />
             </div>
             <div className="chat_bubble_left">
@@ -147,6 +156,8 @@ const Message = ({ messageObj }) => {
                     controls
                   />
                 </div>
+              ) : messageType === "doc" ? (
+                <FileCard leftChat={true} messageObj={messageObj} />
               ) : (
                 <></>
               )}
@@ -174,18 +185,43 @@ const Message = ({ messageObj }) => {
                     controls
                   />
                 </div>
+              ) : messageType === "doc" ? (
+                <FileCard leftChat={false} messageObj={messageObj} />
               ) : (
                 <></>
               )}
               <p className="chat_bubble_right_message">{messageObj?.message}</p>
-              <p className="chat_bubble_right_timestamp">
-                {Time.bubbleRelativeDate(messageObj?.dateCreated)}
-              </p>
+              <div className="chat_bubble_right_timestamp">
+                <p>{Time.bubbleRelativeDate(messageObj?.dateCreated)}</p>
+                <div style={{ width: "20px" }}>
+                  {messageObj?.status === "read" ? (
+                    <DoneAllRounded
+                      sx={{
+                        marginLeft: "7px",
+                        color: CustomColors.white,
+                        fontSize: "18px",
+                      }}
+                    />
+                  ) : (
+                    <DoneRounded
+                      sx={{
+                        marginLeft: "7px",
+                        color: CustomColors.white,
+                        fontSize: "18px",
+                      }}
+                    />
+                  )}
+                </div>
+              </div>
             </div>
             <div className="chat_avatar">
               <Avatar
                 src={currentUser?.photoUrl}
-                sx={{ width: 35, height: 35 }}
+                sx={{
+                  width: 35,
+                  height: 35,
+                  backgroundColor: CustomColors.lightGrey,
+                }}
               />
             </div>
           </div>

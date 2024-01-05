@@ -112,3 +112,21 @@
   background-color: var(--lightBlue);
   margin-right: 10px;
 }
+
+.att_modal_stage_doc {
+  width: 80%;
+  height: 45vh;
+  margin: 15px;
+  border: 1px dashed var(--blue);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  align-items: center;
+  position: relative;
+}
+
+.att_modal_stage_doc .file_name {
+  margin-right: 5px;
+  font-family: "Nunito Sans", sans-serif;
+}

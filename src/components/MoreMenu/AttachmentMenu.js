@@ -59,12 +59,7 @@ function AttachmentMenu(props) {
         }}
       >
         {/* <MenuList> */}
-        <MenuItem>
-          <ListItemIcon>
-            <DescriptionIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText style={{ fontFamily: "Nunito" }}>Document</ListItemText>
-        </MenuItem>
+        <AttachmentModal label="Document" />
         <AttachmentModal label="Video" />
         <AttachmentModal label="Photo" />
         {/* </MenuList> */}

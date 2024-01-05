@@ -205,7 +205,7 @@ const ConnectionListItem = ({ connection }) => {
             />
             <p>Video</p>
           </div>
-        ) : lastMessageType === "document" ? (
+        ) : lastMessageType === "doc" ? (
           <div className="connection_message_att">
             <DescriptionIcon
               sx={{

@@ -131,7 +131,7 @@ export const ChatifyProvider = ({ children }) => {
     directory = "avatars",
     setProgress = (val) => {}
   ) => {
-    const storageRef = ref(storage, `${directory}/${fileDetails.name + v4()}`);
+    const storageRef = ref(storage, `${directory}/${v4() + fileDetails.name}`);
     const uploadTask = uploadBytesResumable(storageRef, fileDetails);
 
     uploadTask.on(

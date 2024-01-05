@@ -22,6 +22,12 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import PhotoAttachment from "./PhotoAttachment";
 import uuid4 from "uuid4";
 import VideoAttachment from "./VideoAttachment";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import DocAttachment from "./DocAttachment";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import { Link } from "react-router-dom";
+import { allowedDocumentFiles } from "../../constants/constants";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -48,6 +54,7 @@ function AttachmentModal({ label }) {
   const [message, setMessage] = useState("");
 
   const inputRef = useRef();
+  let submitRef = useRef();
 
   useEffect(() => {
     setIsPhoto(label === "Photo");
@@ -116,6 +123,8 @@ function AttachmentModal({ label }) {
       setStageStatus("preview_photo");
     } else if (isVideo) {
       setStageStatus("preview_video");
+    } else if (isDoc) {
+      setStageStatus("preview_doc");
     }
   };
 
@@ -134,6 +143,11 @@ function AttachmentModal({ label }) {
     setFilePreviews(newFiles);
   };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    handleSend();
+  };
+
   const handleSend = () => {
     if (!filePreviews.length || uploading) return;
     setUploading(true);
@@ -147,6 +161,8 @@ function AttachmentModal({ label }) {
             <PhotoLibraryIcon fontSize="small" />
           ) : isVideo ? (
             <VideoLibraryIcon fontSize="small" />
+          ) : isDoc ? (
+            <DescriptionIcon fontSize="small" />
           ) : (
             <></>
           )}
@@ -174,11 +190,28 @@ function AttachmentModal({ label }) {
               </Tooltip>
             </div>
           </div>
-          <div className="att_modal_body">
+          <form className="att_modal_body" onSubmit={handleFormSubmit}>
             {stageStatus === "empty" ? (
               <div className="att_modal_stage flex_center">
-                <Button variant="contained" component="label">
-                  Browse
+                <Button
+                  variant="contained"
+                  sx={{
+                    textTransform: "none",
+                    fontFamily: "Mooli",
+                    fontSize: "14px",
+                  }}
+                  startIcon={
+                    isPhoto ? (
+                      <PhotoLibraryIcon />
+                    ) : isVideo ? (
+                      <VideoLibraryIcon />
+                    ) : (
+                      <LibraryBooksIcon />
+                    )
+                  }
+                  component="label"
+                >
+                  {`Choose ${label}`}
                   <VisuallyHiddenInput
                     type="file"
                     accept={
@@ -187,7 +220,7 @@ function AttachmentModal({ label }) {
                         : isVideo
                         ? "video/*"
                         : isDoc
-                        ? ".xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf"
+                        ? allowedDocumentFiles
                         : ""
                     }
                     multiple
@@ -202,6 +235,11 @@ function AttachmentModal({ label }) {
               />
             ) : stageStatus === "preview_video" ? (
               <VideoPreview
+                file={filePreviews[selectedFilePreview]}
+                handleRemove={handleFileRemove}
+              />
+            ) : stageStatus === "preview_doc" ? (
+              <DocPreview
                 file={filePreviews[selectedFilePreview]}
                 handleRemove={handleFileRemove}
               />
@@ -230,7 +268,7 @@ function AttachmentModal({ label }) {
                           setUploadResult={setUploadResult}
                           message={message}
                         />
-                      ) : (
+                      ) : isVideo ? (
                         <VideoAttachment
                           fileObj={fileObj}
                           onClick={handleSelectorClick}
@@ -240,6 +278,18 @@ function AttachmentModal({ label }) {
                           setUploadResult={setUploadResult}
                           message={message}
                         />
+                      ) : isDoc ? (
+                        <DocAttachment
+                          fileObj={fileObj}
+                          onClick={handleSelectorClick}
+                          index={i}
+                          selected={selectedFilePreview === i}
+                          uploading={uploading}
+                          setUploadResult={setUploadResult}
+                          message={message}
+                        />
+                      ) : (
+                        <></>
                       )}
                     </div>
                   ))}
@@ -254,7 +304,7 @@ function AttachmentModal({ label }) {
                             : isVideo
                             ? "video/*"
                             : isDoc
-                            ? ".xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf"
+                            ? allowedDocumentFiles
                             : ""
                         }
                         multiple
@@ -272,7 +322,8 @@ function AttachmentModal({ label }) {
                 </div>
               </div>
             </div>
-          </div>
+            <input type="submit" hidden ref={submitRef} />
+          </form>
         </div>
       </Modal>
     </>
@@ -315,6 +366,35 @@ const VideoPreview = ({ file, handleRemove }) => {
         {/* <source src={file.localUrl} type="video/mp4" /> */}
         Your browser does not support the video tag.
       </video>
+      <Tooltip
+        title="Remove"
+        sx={{ position: "absolute", top: "15px", right: "15px" }}
+      >
+        <IconButton
+          onClick={() => {
+            handleRemove(file?.uid);
+          }}
+        >
+          <CloseRoundedIcon color="error" />
+        </IconButton>
+      </Tooltip>
+    </div>
+  );
+};
+
+const DocPreview = ({ file, handleRemove }) => {
+  return (
+    <div className="att_modal_stage_doc">
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <h3 className="file_name">{file.name}</h3>
+        <Link to={file.localUrl} target="_blank" rel="noopener noreferrer">
+          <IconButton>
+            <OpenInNewIcon sx={{ color: CustomColors.blue }} />
+          </IconButton>
+        </Link>
+      </div>
+
+      <InsertDriveFileIcon sx={{ fontSize: 190, color: CustomColors.grey }} />
       <Tooltip
         title="Remove"
         sx={{ position: "absolute", top: "15px", right: "15px" }}

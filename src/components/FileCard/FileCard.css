@@ -1,0 +1,53 @@
+.att_doc_wrapper {
+  display: flex;
+  background-color: var(--white);
+  height: 65px;
+  width: 260px;
+  /* width: 90%; */
+  /* border: 1px solid black; */
+  cursor: pointer;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.att_doc_left {
+  /* border: 1px solid black; */
+  flex: 30;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.att_doc_center {
+  /* border: 1px solid black; */
+  flex: 60;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.att_doc_name {
+  margin: 0;
+  padding: 0;
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.att_doc_size {
+  margin: 0;
+  padding: 0;
+  font-family: "Nunito", sans-serif;
+  font-size: 12px;
+}
+
+.att_doc_right {
+  /* border: 1px solid black; */
+  flex: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 5px;
+}
