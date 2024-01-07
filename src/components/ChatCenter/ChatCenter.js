@@ -9,22 +9,27 @@ import {
   Button,
   Icon,
   IconButton,
+  Dialog,
   SpeedDial,
   SpeedDialAction,
   SpeedDialIcon,
   Tooltip,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 import MoreMenu from "../MoreMenu/MoreMenu";
 import ChatMoreMenu from "../MoreMenu/ChatMoreMenu";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import CustomColors from "../../constants/colors";
-import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined";
 import SendIcon from "@mui/icons-material/Send";
 import AttachmentMenu from "../MoreMenu/AttachmentMenu";
 import defaultImage from "../../assets/chat_default.png";
 import LockIcon from "@mui/icons-material/Lock";
 import SearchFriendsModal from "../SearchModal/SearchFriendsModal";
 import ChatHeader from "./ChatHeader";
+import Emoticons from "./Emoticons";
 
 function ChatCenter(props) {
   const { selectedFriend, setSelectedFriend } = useContext(ChatifyContext);
@@ -120,19 +125,44 @@ const ChatFooter = () => {
   //   { icon: <VideoLibraryIcon />, name: "Videos" },
   //   { icon: <PhotoLibraryIcon />, name: "Photos" },
   // ];
-  const { sendChat } = useContext(ChatifyContext);
+  const { sendChat, selectedFriend, currentUser } = useContext(ChatifyContext);
   const [chat, setChat] = useState("");
+  const [blockedDialog, setBlockedDialog] = useState(false);
+  const [blocked, setBlocked] = useState(selectedFriend?.blocked);
+
+  useEffect(() => {
+    setBlocked(selectedFriend?.blocked);
+  }, [selectedFriend]);
+
   let submitRef = useRef();
 
   const handleChatChange = (e) => {
-    let value = e.target.value;
+    let value;
+    if (e?.target) {
+      value = e.target.value;
+    } else {
+      value = chat + e;
+    }
     setChat(value);
+  };
+
+  const handleBlockedDialogOpen = () => setBlockedDialog(true);
+  const handleBlockedDialogClose = () => setBlockedDialog(false);
+
+  const checkBlocked = () => {
+    if (blocked) {
+      handleBlockedDialogOpen();
+      return true;
+    }
+    return false;
   };
 
   const handleSend = async (e) => {
     e.preventDefault();
-    setChat("");
     let finalValue = chat.trim();
+    let isBlocked = checkBlocked();
+    if (isBlocked) return;
+    setChat("");
     if (!finalValue.length) return;
     await sendChat(finalValue);
   };
@@ -142,10 +172,11 @@ const ChatFooter = () => {
   };
 
   return (
-    <div className="chat_footer">
-      <form className="chat_footer_shadow" onSubmit={handleSend}>
-        <div className="chat_footer_dial">
-          {/* <SpeedDial
+    <>
+      <div className="chat_footer">
+        <form className="chat_footer_shadow" onSubmit={handleSend}>
+          <div className="chat_footer_dial">
+            {/* <SpeedDial
             ariaLabel="SpeedDial basic example"
             sx={{
               position: "relative",
@@ -165,30 +196,44 @@ const ChatFooter = () => {
               />
             ))}
           </SpeedDial> */}
-          <AttachmentMenu />
-        </div>
-        <div className="chat_footer_input">
-          <input
-            value={chat}
-            onChange={handleChatChange}
-            placeholder="Type a message here..."
-          />
-        </div>
-        <div className="chat_footer_right">
-          <IconButton sx={{ marginRight: "10px" }}>
-            <EmojiEmotionsOutlinedIcon />
-          </IconButton>
+            <AttachmentMenu />
+          </div>
+          <div className="chat_footer_input">
+            <input
+              value={chat}
+              onChange={handleChatChange}
+              placeholder="Type a message here..."
+            />
+          </div>
+          <div className="chat_footer_right">
+            <Emoticons handleChange={handleChatChange} />
 
-          <IconButton
-            sx={{ backgroundColor: CustomColors.lightBlue }}
-            onClick={handleSendClick}
-          >
-            <SendIcon sx={{ color: CustomColors.blue, fontSize: "26px" }} />
-          </IconButton>
-          <input type="submit" hidden ref={submitRef} />
-        </div>
-      </form>
-    </div>
+            <IconButton
+              sx={{ backgroundColor: CustomColors.lightBlue }}
+              onClick={handleSendClick}
+            >
+              <SendIcon sx={{ color: CustomColors.blue, fontSize: "26px" }} />
+            </IconButton>
+            <input type="submit" hidden ref={submitRef} />
+          </div>
+        </form>
+      </div>
+      <Dialog open={blockedDialog} onClose={handleBlockedDialogClose}>
+        <DialogTitle>Could not send message</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {blocked === currentUser.userId
+              ? `You have blocked ${selectedFriend?.userName}. You need to unblock ${selectedFriend?.userName} in order to send messages.`
+              : `${selectedFriend?.userName} has blocked you. ${selectedFriend?.userName} has to unblock you in order to send message.`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleBlockedDialogClose} autoFocus>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };
 

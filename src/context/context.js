@@ -3,6 +3,7 @@ import {
   doc,
   getDoc,
   onSnapshot,
+  or,
   query,
   setDoc,
   updateDoc,
@@ -54,7 +55,10 @@ export const ChatifyProvider = ({ children }) => {
 
     let chatsQuery = query(
       collection(db, `chats`),
-      where("receiverId", "==", currentUser.userId)
+      or(
+        where("receiverId", "==", currentUser.userId),
+        where("senderId", "==", currentUser.userId)
+      )
     );
     const unsubConn = onSnapshot(chatsQuery, async (snapshot) => {
       // console.log("new message");

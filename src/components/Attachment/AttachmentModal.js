@@ -1,7 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./Attachment.css";
 import {
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   ListItemIcon,
   ListItemText,
@@ -28,6 +33,8 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import { Link } from "react-router-dom";
 import { allowedDocumentFiles } from "../../constants/constants";
+import { ChatifyContext } from "../../context/context";
+import Emoticons from "../ChatCenter/Emoticons";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -42,6 +49,7 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 function AttachmentModal({ label }) {
+  const { selectedFriend, currentUser } = useContext(ChatifyContext);
   const [open, setOpen] = useState(false);
   const [isPhoto, setIsPhoto] = useState();
   const [isDoc, setIsDoc] = useState();
@@ -52,6 +60,12 @@ function AttachmentModal({ label }) {
   const [uploading, setUploading] = useState(false);
   const [uploadResult, setUploadResult] = useState([]);
   const [message, setMessage] = useState("");
+  const [blockedDialog, setBlockedDialog] = useState(false);
+  const [blocked, setBlocked] = useState(selectedFriend?.blocked);
+
+  useEffect(() => {
+    setBlocked(selectedFriend?.blocked);
+  }, [selectedFriend]);
 
   const inputRef = useRef();
   let submitRef = useRef();
@@ -82,6 +96,17 @@ function AttachmentModal({ label }) {
     }
   }, [uploadResult]);
 
+  const handleBlockedDialogOpen = () => setBlockedDialog(true);
+  const handleBlockedDialogClose = () => setBlockedDialog(false);
+
+  const checkBlocked = () => {
+    if (blocked) {
+      handleBlockedDialogOpen();
+      return true;
+    }
+    return false;
+  };
+
   const handleClose = () => {
     if (uploading) return;
     setOpen(false);
@@ -107,7 +132,12 @@ function AttachmentModal({ label }) {
 
   const handleMessage = (e) => {
     if (uploading) return;
-    let value = e.target.value;
+    let value;
+    if (e?.target) {
+      value = e.target.value;
+    } else {
+      value = message + e;
+    }
     setMessage(value);
   };
 
@@ -150,6 +180,8 @@ function AttachmentModal({ label }) {
 
   const handleSend = () => {
     if (!filePreviews.length || uploading) return;
+    let isBlocked = checkBlocked();
+    if (isBlocked) return;
     setUploading(true);
   };
 
@@ -252,6 +284,7 @@ function AttachmentModal({ label }) {
                 value={message}
                 onChange={handleMessage}
               />
+              <Emoticons handleChange={handleMessage} />
             </div>
             <div className="att_footer_container">
               <div className="att_modal_selector">
@@ -326,6 +359,21 @@ function AttachmentModal({ label }) {
           </form>
         </div>
       </Modal>
+      <Dialog open={blockedDialog} onClose={handleBlockedDialogClose}>
+        <DialogTitle>Could not send message</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {blocked === currentUser.userId
+              ? `You have blocked ${selectedFriend?.userName}. You need to unblock ${selectedFriend?.userName} in order to send messages.`
+              : `${selectedFriend?.userName} has blocked you. ${selectedFriend?.userName} has to unblock you in order to send message.`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleBlockedDialogClose} autoFocus>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
