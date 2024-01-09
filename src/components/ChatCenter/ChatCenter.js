@@ -38,7 +38,13 @@ function ChatCenter(props) {
 
   useEffect(() => {
     if (selectedFriend) {
-      fetchFriend();
+      let friendRef = doc(db, `users/${selectedFriend.userId}`);
+      let unsub = onSnapshot(friendRef, (snapshot) => {
+        // console.log(snapshot.data()?.onlineStatus);
+        setFriend(snapshot.data());
+      });
+      setChatStatus("user_result");
+      return unsub;
     } else {
       setFriend(null);
       setSelectedFriend(null);

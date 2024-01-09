@@ -23,9 +23,9 @@ export const Time = {
 
     if (diff < 5 * 60 * 1000) {
       return "Now";
-    } else if (diff < 24 * 60 * 60 * 1000) {
+    } else if (Time.isToday(nanoSeconds)) {
       return Time.getTime(nanoSeconds);
-    } else if (diff < 2 * 24 * 60 * 60 * 1000) {
+    } else if (Time.isYesterday(nanoSeconds)) {
       return "Yesterday";
     } else if (diff < 7 * 24 * 60 * 60 * 1000) {
       return t.toLocaleDateString("en-GB", { weekday: "long" });
@@ -40,9 +40,9 @@ export const Time = {
     let diff = now - nano;
     let t = new Date(nano);
 
-    if (diff < 24 * 60 * 60 * 1000) {
+    if (Time.isToday(nanoSeconds)) {
       return Time.getTime(nanoSeconds);
-    } else if (diff < 2 * 24 * 60 * 60 * 1000) {
+    } else if (Time.isYesterday(nanoSeconds)) {
       return "Yesterday, " + Time.getTime(nanoSeconds);
     } else if (diff < 7 * 24 * 60 * 60 * 1000) {
       return (
@@ -53,6 +53,50 @@ export const Time = {
     } else {
       return t.toLocaleDateString() + ", " + Time.getTime(nanoSeconds);
     }
+  },
+
+  formatLastSeen: (nanoSeconds) => {
+    if (nanoSeconds.toLowerCase() === "online") return nanoSeconds;
+    let nano = parseInt(nanoSeconds);
+    let now = Date.now();
+    let diff = now - nano;
+    let t = new Date(nano);
+
+    if (Time.isToday(nanoSeconds)) {
+      return "Last seen today at " + Time.getTime(nanoSeconds);
+    } else if (Time.isYesterday(nanoSeconds)) {
+      return "Last seen yesterday at " + Time.getTime(nanoSeconds);
+    } else if (diff < 7 * 24 * 60 * 60 * 1000) {
+      return `Last seen on ${t.toLocaleDateString("en-GB", {
+        weekday: "long",
+      })} at ${Time.getTime(nanoSeconds)}`;
+    } else {
+      return `Last seen on ${t.toLocaleDateString()} at  ${Time.getTime(
+        nanoSeconds
+      )}`;
+    }
+  },
+
+  isToday: (nanoSeconds) => {
+    let nano = parseInt(nanoSeconds);
+    let now = Date.now();
+    let diff = now - nano;
+    let t = new Date(nano);
+    let hoursSinceDayStarted = new Date(now).getHours();
+    let diffInHours = diff / (1 * 60 * 60 * 1000);
+
+    return diffInHours < hoursSinceDayStarted;
+  },
+
+  isYesterday: (nanoSeconds) => {
+    let nano = parseInt(nanoSeconds);
+    let now = Date.now();
+    let diff = now - nano;
+    let t = new Date(nano);
+    let hoursSinceYesterdayStarted = new Date(now).getHours() + 24;
+    let diffInHours = diff / (1 * 60 * 60 * 1000);
+
+    return diffInHours < hoursSinceYesterdayStarted;
   },
 };
 

@@ -13,7 +13,7 @@ import { createContext, useEffect, useState } from "react";
 import { db, storage } from "../firebase.config";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { uuid4 as v4 } from "uuid4";
-import { baseUrl, getConnectionsUrl } from "../constants/constants";
+import { Time, baseUrl, getConnectionsUrl } from "../constants/constants";
 
 export const ChatifyContext = createContext();
 
@@ -36,6 +36,18 @@ export const ChatifyProvider = ({ children }) => {
     }
     return () => window.removeEventListener("resize", handleResize);
   }, [hasWindow]);
+
+  useEffect(() => {
+    if (hasWindow) {
+      window.addEventListener("blur", handleWindowBlur);
+      window.addEventListener("focus", handleWindowFocus);
+      handleWindowFocus();
+    }
+    return () => {
+      window.removeEventListener("blur", handleWindowBlur);
+      window.removeEventListener("focus", handleWindowFocus);
+    };
+  }, [hasWindow, currentUser]);
 
   useEffect(() => {
     if (!currentUser) return;
@@ -66,6 +78,30 @@ export const ChatifyProvider = ({ children }) => {
     });
     return unsubConn;
   }, [currentUser]);
+
+  const handleWindowFocus = async () => {
+    // console.log("Window focused");
+    if (!currentUser) {
+      // console.log("No user");
+      return;
+    }
+    // console.log(currentUser.userId);
+    let userRef = doc(db, `users/${currentUser?.userId}`);
+    await updateDoc(userRef, { onlineStatus: "online" });
+  };
+
+  const handleWindowBlur = async () => {
+    // console.log("window blurred");
+    if (!currentUser) {
+      // console.log("No user");
+      return;
+    }
+    // console.log(currentUser.userId);
+
+    let lastSeen = Date.now().toString();
+    let userRef = doc(db, `users/${currentUser?.userId}`);
+    await updateDoc(userRef, { onlineStatus: lastSeen });
+  };
 
   const clipWords = (words, num) => {
     return words.length > num ? words.slice(0, num) + "..." : words;
@@ -115,6 +151,7 @@ export const ChatifyProvider = ({ children }) => {
   };
 
   const signOut = async () => {
+    await handleWindowBlur();
     localStorage.removeItem("uid");
     setSelectedFriend(null);
     setCurrentUser(false);

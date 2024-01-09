@@ -58,6 +58,20 @@ function MoreMenu(props) {
         >
           My Profile
         </MenuItem>
+
+        {currentUser?.isAdmin ? (
+          <MenuItem
+            sx={{ fontFamily: "Nunito" }}
+            onClick={() => {
+              handleNavigate("/admin-dashboard");
+            }}
+          >
+            Admin
+          </MenuItem>
+        ) : (
+          <></>
+        )}
+
         <MenuItem sx={{ fontFamily: "Nunito" }} onClick={handleSignOut}>
           Logout
         </MenuItem>

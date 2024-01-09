@@ -99,7 +99,7 @@ const Media = () => {
         ...doc.data(),
       });
     });
-    console.log(res);
+    // console.log(res);
     setMediaList(res);
     if (res.length) {
       setMediaStatus("media-results");

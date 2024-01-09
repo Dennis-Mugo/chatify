@@ -33,6 +33,12 @@ function StarterPage(props) {
         fetchUser();
     }, [])
   return (
+    <StarterComponent />
+  );
+}
+
+export const StarterComponent = () => {
+  return (
     <div className="starter_container">
       <div className="starter_wrapper">
         <Logo style={{margin: "20px 0"}} />
