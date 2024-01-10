@@ -101,7 +101,7 @@ function ConnectionList(props) {
               </div>
             ))
         ) : connectionsStatus === "no results" ? (
-          <p className="no_friend">
+          <p className="no_friend" style={{ marginTop: "10vh" }}>
             There is no friend in this list. Click search friends to add friends
           </p>
         ) : connectionsStatus === "results" ? (

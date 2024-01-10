@@ -7,7 +7,9 @@ https://www.uplabs.com/posts/admin-dashboard-chat-messenger-page-web-ui-template
 
 https://www.figma.com/file/aHb0FavPFDrksND6ugcBpd/Chat-Dashboard?type=design&node-id=0-1&mode=design&t=BhIFgiiYIAszCNyS-0
 
+
 CLOUD FUNCTION COMMANDS
 firebase emulators:start
 firebase deploy --only functions
- 
+firebase deploy --only functions:addMessage,functions:makeUppercase
+npm install -g firebase-tools 

@@ -4,6 +4,10 @@ export const searchFriendsUrl =
   "https://search-friends-rp4s4n4rcq-uc.a.run.app/chatify--chat/us-central1";
 export const getConnectionsUrl =
   "https://get-connections-rp4s4n4rcq-uc.a.run.app/chatify--chat/us-central1";
+export const getNumUsersUrl =
+  "https://get-num-users-rp4s4n4rcq-uc.a.run.app/chatify--chat/us-central1";
+export const getNewUsersGraphUrl =
+  "https://get-new-monthly-users-rp4s4n4rcq-uc.a.run.app//chatify--chat/us-central1";
 
 export const Time = {
   getTime: (nanoSeconds) => {
@@ -34,6 +38,13 @@ export const Time = {
     }
   },
 
+  formatDate: (date) => {
+    let dd = ("0" + date.getDate()).slice(-2);
+    let mm = ("0" + (date.getMonth() + 1)).slice(-2);
+    let yy = date.getFullYear();
+    return `${dd}/${mm}/${yy}`;
+  },
+
   bubbleRelativeDate: (nanoSeconds) => {
     let nano = parseInt(nanoSeconds);
     let now = Date.now();
@@ -51,7 +62,7 @@ export const Time = {
         Time.getTime(nanoSeconds)
       );
     } else {
-      return t.toLocaleDateString() + ", " + Time.getTime(nanoSeconds);
+      return Time.formatDate(t) + ", " + Time.getTime(nanoSeconds);
     }
   },
 
@@ -71,7 +82,7 @@ export const Time = {
         weekday: "long",
       })} at ${Time.getTime(nanoSeconds)}`;
     } else {
-      return `Last seen on ${t.toLocaleDateString()} at  ${Time.getTime(
+      return `Last seen on ${Time.formatDate(t)} at  ${Time.getTime(
         nanoSeconds
       )}`;
     }
@@ -117,3 +128,18 @@ export const getFileSize = (bytes) => {
 
 export const allowedDocumentFiles =
   ".xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf,.rtf,.zip,.php";
+
+export const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
