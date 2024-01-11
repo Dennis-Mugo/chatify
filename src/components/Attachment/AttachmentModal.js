@@ -87,7 +87,7 @@ function AttachmentModal({ label }) {
   };
 
   useEffect(() => {
-    console.log(uploadResult);
+    // console.log(uploadResult);
     if (
       filePreviews.length > 0 &&
       filePreviews.length === uploadResult.length
@@ -146,7 +146,7 @@ function AttachmentModal({ label }) {
     let listFiles = toList(e.target.files);
     e.target.value = "";
     let allFiles = filePreviews.concat(listFiles);
-    console.log(allFiles);
+    // console.log(allFiles);
     setSelectedPreview(allFiles.length - 1);
     setFilePreviews(allFiles);
     if (isPhoto) {

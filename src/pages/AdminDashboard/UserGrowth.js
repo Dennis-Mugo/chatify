@@ -35,7 +35,7 @@ function UserGrowth(props) {
         }),
       });
       res = await res.json();
-      console.log(res);
+      // console.log(res);
       setResult(res);
       setLoading(false);
     } catch (e) {

@@ -13,7 +13,7 @@ function Emoticons({ mainChat, handleChange }) {
   const handleClose = () => setOpen(false);
 
   const handleSelect = (emojiObj) => {
-    console.log(emojiObj);
+    // console.log(emojiObj);
     handleChange(emojiObj.emoji);
   };
 

@@ -62,7 +62,7 @@ function SearchFriendsModal({ anchor }) {
       body: JSON.stringify({ userId: currentUser.userId, query: key }),
     });
     res = await res.json();
-    console.log(res);
+    // console.log(res);
     setQueryResult(res);
     if (res.length) {
       setResultContainer("results");

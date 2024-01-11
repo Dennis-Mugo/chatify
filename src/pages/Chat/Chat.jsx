@@ -12,7 +12,7 @@ function Chat(props) {
   const navigate = useNavigate();
   const { currentUser, signOut, selectedFriend } = useContext(ChatifyContext);
   const [signoutLoading, setSignoutLoading] = useState(false);
-  console.log(currentUser);
+  // console.log(currentUser);
 
   const handleSignOut = async () => {
     setSignoutLoading(true);

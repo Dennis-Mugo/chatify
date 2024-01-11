@@ -1,4 +1,15 @@
-import { IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from "@mui/material";
 import React, { useContext, useState } from "react";
 import CustomColors from "../../constants/colors";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -72,12 +83,38 @@ function MoreMenu(props) {
           <></>
         )}
 
-        <MenuItem sx={{ fontFamily: "Nunito" }} onClick={handleSignOut}>
-          Logout
-        </MenuItem>
+        <LogoutDialog handleSignOut={handleSignOut} />
       </Menu>
     </>
   );
 }
+
+const LogoutDialog = ({ handleSignOut }) => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  return (
+    <>
+      <MenuItem sx={{ fontFamily: "Nunito" }} onClick={handleOpen}>
+        Logout
+      </MenuItem>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Logout?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to logout?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleSignOut} autoFocus>
+            Logout
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
+};
 
 export default MoreMenu;

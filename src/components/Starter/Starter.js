@@ -29,7 +29,7 @@ function Starter({ userType, Page }) {
 
   const fetchUser = async () => {
     setAuthStatus("loading");
-    console.log("checking...");
+    // console.log("checking...");
     if (currentUser) {
       checkUser();
     } else {

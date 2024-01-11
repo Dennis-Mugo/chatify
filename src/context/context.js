@@ -203,7 +203,7 @@ export const ChatifyProvider = ({ children }) => {
       body: JSON.stringify({ userId: currentUser.userId }),
     });
     res = await res.json();
-    console.log(res);
+    // console.log(res);
     return res;
   };
 

@@ -142,12 +142,12 @@
 }
 .image_att,
 .video_att {
-  max-height: 180px;
+  max-height: 250px;
   max-width: 100%;
   /* min-width: 200px; */
   border-radius: 15px;
   background-color: var(--lightGrey);
-  height: 180px;
+  height: 250px;
 }
 
 .chat_bubble_right .att_doc_wrapper {

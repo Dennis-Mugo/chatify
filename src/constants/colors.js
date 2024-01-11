@@ -9,6 +9,8 @@ const CustomColors = {
   lightGrey: "rgba(0, 0, 0, 0.24)",
   textGrey: "rgba(0, 0, 0, 0.7)",
   pink500: "#ff336650",
+  lightPink: "#ff336620",
+  crimson: "crimson",
 };
 
 export default CustomColors;

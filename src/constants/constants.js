@@ -66,6 +66,12 @@ export const Time = {
     }
   },
 
+  getDateTime: (nanoSeconds) => {
+    let nano = parseInt(nanoSeconds);
+    let t = new Date(nano);
+    return Time.formatDate(t) + ", " + Time.getTime(nanoSeconds);
+  },
+
   formatLastSeen: (nanoSeconds) => {
     if (nanoSeconds.toLowerCase() === "online") return nanoSeconds;
     let nano = parseInt(nanoSeconds);

@@ -1,6 +1,35 @@
-.modal_container {
+.notification_modal_container {
   width: 50%;
   background-color: var(--pureWhite);
   height: 70vh;
   border-radius: 20px;
+}
+
+.notification_container_no_results {
+  display: flex;
+  height: calc(70vh - 78px);
+  /* border: 1px solid black; */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification_container_no_results h3 {
+  font-family: "Nunito", sans-serif;
+  color: var(--dark);
+}
+
+.notification_container_header {
+  height: 78px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  /* border: 1px solid black; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notification_container_header h2 {
+  margin: 0;
+  padding: 0 20px;
+  font-family: "Nunito Sans", sans-serif;
 }

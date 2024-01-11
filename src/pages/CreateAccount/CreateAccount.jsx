@@ -63,7 +63,7 @@ const CreateAccount = () => {
       await storeTempUser(userCredential.user);
       navigate("/verify-phone");
     } catch (error) {
-      console.log(error.message)
+      // console.log(error.message);
       if (error.message.includes("email-already-in-use")) {
         setEmailError("Email already registered!");
       }
