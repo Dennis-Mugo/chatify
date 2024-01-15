@@ -156,6 +156,7 @@ const SigninVerify = () => {
             }}
           />
           <LoadingButton
+          id='recaptcha'
             variant="contained"
             onClick={handleSend}
             loading={sendLoading}
@@ -174,7 +175,7 @@ const SigninVerify = () => {
           </LoadingButton>
           
             
-          <div id="recaptcha"></div>
+          {/* <div id="recaptcha"></div> */}
           <p className="otp_text" hidden={!otpVisible}>{`A code has been sent to ${phoneNumber}. Enter the code below.`}</p>
           <TextField
             variant="outlined"

@@ -7,7 +7,7 @@ export const getConnectionsUrl =
 export const getNumUsersUrl =
   "https://get-num-users-rp4s4n4rcq-uc.a.run.app/chatify--chat/us-central1";
 export const getNewUsersGraphUrl =
-  "https://get-new-monthly-users-rp4s4n4rcq-uc.a.run.app//chatify--chat/us-central1";
+  "https://get-new-monthly-users-rp4s4n4rcq-uc.a.run.app/chatify--chat/us-central1";
 
 export const Time = {
   getTime: (nanoSeconds) => {
@@ -34,7 +34,7 @@ export const Time = {
     } else if (diff < 7 * 24 * 60 * 60 * 1000) {
       return t.toLocaleDateString("en-GB", { weekday: "long" });
     } else {
-      return t.toLocaleDateString();
+      return Time.formatDate(t);
     }
   },
 

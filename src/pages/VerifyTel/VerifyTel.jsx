@@ -160,6 +160,7 @@ const VerifyTel = () => {
             }}
           />
           <LoadingButton
+          id="recaptcha"
             variant="contained"
             onClick={handleSubmitPhone}
             loading={submitLoading}
@@ -178,7 +179,7 @@ const VerifyTel = () => {
           </LoadingButton>
           
             
-          <div id="recaptcha"></div>
+          
           <p className="otp_text" hidden={!otpVisible}>{`A code has been sent to ${phoneNumber}. Enter the code below.`}</p>
           <TextField
             variant="outlined"
