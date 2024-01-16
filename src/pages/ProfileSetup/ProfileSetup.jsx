@@ -121,7 +121,7 @@ const ProfileSetup = () => {
 
   const handleUploadImage = async () => {
     if (uploadLoading || submitLoading) return;
-    if (!displayUrl.includes("https")) {
+    if (displayUrl.includes("blob")) {
       setUploadLoading(true);
       await uploadFile(localImage, onEndUpload, "avatars", setUploadProgress);
     }

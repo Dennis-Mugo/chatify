@@ -80,7 +80,6 @@ const SigninVerify = () => {
 
   const sendOTP = async () => {
     try {
-      
       auth.languageCode = auth.useDeviceLanguage();
       let recaptchaVerifier;
       if (!resending) {

@@ -32,6 +32,7 @@ function StarterPage(props) {
     useEffect(() => {
         fetchUser();
     }, [])
+    
   return (
     <StarterComponent />
   );
