@@ -94,15 +94,29 @@ export const Time = {
     }
   },
 
+  msSinceDayStarted: () => {
+    let now = new Date();
+    let then = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      0,
+      0,
+      0
+    );
+    let diff = now.getTime() - then.getTime(); // difference in milliseconds
+    return diff;
+  },
+
   isToday: (nanoSeconds) => {
     let nano = parseInt(nanoSeconds);
     let now = Date.now();
     let diff = now - nano;
     let t = new Date(nano);
-    let hoursSinceDayStarted = new Date(now).getHours();
-    let diffInHours = diff / (1 * 60 * 60 * 1000);
-
-    return diffInHours < hoursSinceDayStarted;
+    let msSinceDayStarted = Time.msSinceDayStarted();
+    // let diffInHours = diff / (1 * 60 * 60 * 1000);
+    // console.log(diff, msSinceDayStarted);
+    return diff <= msSinceDayStarted;
   },
 
   isYesterday: (nanoSeconds) => {
